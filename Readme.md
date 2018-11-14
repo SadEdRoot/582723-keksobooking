@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Эдуард Садрутдинов](https://up.htmlacademy.ru/javascript/16/user/582723).
-* Наставник: `Неизвестно`.
+* Наставник: [Руфат Хасларов](https://up.htmlacademy.ru/javascript/16/user/372587).
 
 ---
 
