@@ -10,13 +10,13 @@ var NUMBER_OF_PINS = 8;
 var PIN_WIDTH = 25;
 var PIN_HEIGHT = 70;
 
-var getRandomFromDiapason = function (max, min) {
+var getRandomFromRange = function (max, min) {
   min = min || 0;
   return Math.floor(Math.random() * (max + 1 - min) + min);
 };
 
 var getRandomLenghtFeatures = function (features) {
-  var cutArray = features.slice(0, getRandomFromDiapason(features.length));
+  var cutArray = features.slice(0, getRandomFromRange(features.length));
   return cutArray;
 };
 
@@ -24,7 +24,7 @@ var shuffleArray = function (photos) {
   var bufferArray = photos.slice();
   for (var i = bufferArray.length - 1; i > 1; i--) {
     var x = bufferArray[i];
-    var j = getRandomFromDiapason(i - 1);
+    var j = getRandomFromRange(i - 1);
     bufferArray[i] = bufferArray[j];
     bufferArray[j] = x;
   }
@@ -38,21 +38,21 @@ var getPinData = function (i) {
     },
     'offer': {
       'title': ADDRESSES[i],
-      'address': getRandomFromDiapason(600) + ', ' + getRandomFromDiapason(350),
-      'price': getRandomFromDiapason(1000000, 1000),
-      'type': TYPES[getRandomFromDiapason(TYPES.length - 1)],
-      'rooms': getRandomFromDiapason(5, 1),
-      'guests': getRandomFromDiapason(15),
-      'checkin': CHECK_IN_TIMES[getRandomFromDiapason(CHECK_IN_TIMES.length - 1)],
-      'checkout': CHECK_OUT_TIMES[getRandomFromDiapason(CHECK_OUT_TIMES.length - 1)],
+      'address': getRandomFromRange(600) + ', ' + getRandomFromRange(350),
+      'price': getRandomFromRange(1000000, 1000),
+      'type': TYPES[getRandomFromRange(TYPES.length - 1)],
+      'rooms': getRandomFromRange(5, 1),
+      'guests': getRandomFromRange(15),
+      'checkin': CHECK_IN_TIMES[getRandomFromRange(CHECK_IN_TIMES.length - 1)],
+      'checkout': CHECK_OUT_TIMES[getRandomFromRange(CHECK_OUT_TIMES.length - 1)],
       'features': getRandomLenghtFeatures(FEATURES),
       'description': 'Великолепная квартира-студия в центре Токио.',
       'photos': shuffleArray(PHOTOS)
     },
 
     'location': {
-      'x': getRandomFromDiapason(1200),
-      'y': getRandomFromDiapason(630, 130)
+      'x': getRandomFromRange(1200),
+      'y': getRandomFromRange(630, 130)
     }
   };
   return element;
