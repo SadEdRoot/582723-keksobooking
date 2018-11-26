@@ -1,6 +1,6 @@
 'use strict';
 
-var ADDRESSES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
+var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var CHECK_IN_TIMES = ['12:00', '13:00', '14:00'];
 var CHECK_OUT_TIMES = ['12:00', '13:00', '14:00'];
@@ -10,18 +10,24 @@ var NUMBER_OF_PINS = 8;
 var PIN_WIDTH = 25;
 var PIN_HEIGHT = 70;
 
+var AccomodationType = {
+  BUNGALO: 'Бунгало',
+  HOUSE: 'Дом',
+  PALACE: 'Дворец',
+};
+
 var getRandomFromRange = function (max, min) {
   min = min || 0;
   return Math.floor(Math.random() * (max + 1 - min) + min);
 };
 
-var getRandomLenghtFeatures = function (features) {
-  var cutArray = features.slice(0, getRandomFromRange(features.length));
+var getRandomLenghtFeatures = function () {
+  var cutArray = FEATURES.slice(0, getRandomFromRange(FEATURES.length));
   return cutArray;
 };
 
-var shuffleArray = function (photos) {
-  var bufferArray = photos.slice();
+var shuffleArray = function (arr) {
+  var bufferArray = arr.slice();
   for (var i = bufferArray.length - 1; i > 1; i--) {
     var x = bufferArray[i];
     var j = getRandomFromRange(i - 1);
@@ -32,35 +38,37 @@ var shuffleArray = function (photos) {
 };
 
 var getPinData = function (i) {
+  var x = getRandomFromRange(1200);
+  var y = getRandomFromRange(630, 130);
   var element = {
     'author': {
       'avatar': 'img/avatars/user0' + (i + 1) + '.png',
     },
     'offer': {
-      'title': ADDRESSES[i],
-      'address': getRandomFromRange(600) + ', ' + getRandomFromRange(350),
+      'title': TITLES[i],
+      'address': x + ', ' + y,
       'price': getRandomFromRange(1000000, 1000),
       'type': TYPES[getRandomFromRange(TYPES.length - 1)],
       'rooms': getRandomFromRange(5, 1),
       'guests': getRandomFromRange(15),
       'checkin': CHECK_IN_TIMES[getRandomFromRange(CHECK_IN_TIMES.length - 1)],
       'checkout': CHECK_OUT_TIMES[getRandomFromRange(CHECK_OUT_TIMES.length - 1)],
-      'features': getRandomLenghtFeatures(FEATURES),
+      'features': getRandomLenghtFeatures(),
       'description': 'Великолепная квартира-студия в центре Токио.',
       'photos': shuffleArray(PHOTOS)
     },
 
     'location': {
-      'x': getRandomFromRange(1200),
-      'y': getRandomFromRange(630, 130)
+      'x': x,
+      'y': y
     }
   };
   return element;
 };
 
-var getPinsArray = function () {
+var getPins = function (number) {
   var dataArray = [];
-  for (var i = 0; i < NUMBER_OF_PINS; i++) {
+  for (var i = 0; i < number; i++) {
     dataArray.push(getPinData(i));
   }
   return dataArray;
@@ -71,8 +79,8 @@ var clearActiveClass = function () {
   userDialog.classList.remove('map--faded');
 };
 
-var renderPin = function (Element, pin) {
-  var pinElement = Element.cloneNode(true);
+var renderPin = function (element, pin) {
+  var pinElement = element.cloneNode(true);
   pinElement.style = 'left: ' + (pin.location.x - PIN_WIDTH) + 'px; top: ' + (pin.location.y - PIN_HEIGHT) + 'px;';
   pinElement.querySelector('img').src = pin.author.avatar;
   pinElement.querySelector('img').alt = pin.offer.title;
@@ -89,19 +97,19 @@ var createPinsTemplates = function (pins) {
 };
 
 var addFeaturesToCard = function (features) {
-  var featurString = '';
+  var feature = '';
   for (var i = 0; i < features.length; i++) {
-    featurString += '<li class="popup__feature popup__feature--' + features[i] + '"></li>';
+    feature += '<li class="popup__feature popup__feature--' + features[i] + '"></li>';
   }
-  return featurString;
+  return feature;
 };
 
 var addPhotosToCard = function (photos) {
-  var photoElements = '';
+  var photo = '';
   for (var i = 0; i < photos.length; i++) {
-    photoElements += '<img src="' + photos[i] + '" class="popup__photo" width="45" height="40" alt="Фотография жилья"></img>';
+    photo += '<img src="' + photos[i] + '" class="popup__photo" width="45" height="40" alt="Фотография жилья"></img>';
   }
-  return photoElements;
+  return photo;
 };
 
 var renderCard = function (pin) {
@@ -109,7 +117,7 @@ var renderCard = function (pin) {
   cardElement.querySelector('.popup__title').textContent = pin.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = pin.offer.address;
   cardElement.querySelector('.popup__text--price').textContent = pin.offer.price + '₽/ночь';
-  cardElement.querySelector('.popup__type').textContent = getType(pin.offer.type);
+  cardElement.querySelector('.popup__type').textContent = AccomodationType[pin.offer.type];
   cardElement.querySelector('.popup__text--capacity').textContent = pin.offer.rooms + ' комнаты для ' + pin.offer.guests + ' гостей';
   cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + pin.offer.checkin + ', выезд до ' + pin.offer.checkout;
   cardElement.querySelector('.popup__features').innerHTML = addFeaturesToCard(pin.offer.features);
@@ -119,25 +127,15 @@ var renderCard = function (pin) {
   return cardElement;
 };
 
-var getType = function (type) {
-  var types = {
-    'palace': 'Дворец ',
-    'flat': 'Квартира',
-    'house': 'Дом',
-    'bungalo': 'Бунгало'
-  };
-  return types[type];
-};
-
 var createPinMapAndCard = function () {
   clearActiveClass();
-  var dataArray = getPinsArray();
+  var pins = getPins(NUMBER_OF_PINS);
 
   var pinList = document.querySelector('.map__pins');
-  pinList.appendChild(createPinsTemplates(dataArray));
+  pinList.appendChild(createPinsTemplates(pins));
 
   var cardFragment = document.createDocumentFragment();
-  cardFragment.appendChild(renderCard(dataArray[0]));
+  cardFragment.appendChild(renderCard(pins[0]));
 
   var cardList = document.querySelector('.map');
   cardList.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
