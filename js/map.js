@@ -71,8 +71,8 @@ var clearActiveClass = function () {
   userDialog.classList.remove('map--faded');
 };
 
-var renderPin = function (pin) {
-  var pinElement = document.querySelector('#pin').content.querySelector('.map__pin').cloneNode(true);
+var renderPin = function (Element, pin) {
+  var pinElement = Element.cloneNode(true);
   pinElement.style = 'left: ' + (pin.location.x - PIN_WIDTH) + 'px; top: ' + (pin.location.y - PIN_HEIGHT) + 'px;';
   pinElement.querySelector('img').src = pin.author.avatar;
   pinElement.querySelector('img').alt = pin.offer.title;
@@ -80,9 +80,10 @@ var renderPin = function (pin) {
 };
 
 var createPinsTemplates = function (pins) {
+  var pinElement = document.querySelector('#pin').content.querySelector('.map__pin');
   var fragment = document.createDocumentFragment();
   for (var j = 0; j < pins.length; j++) {
-    fragment.appendChild(renderPin(pins[j]));
+    fragment.appendChild(renderPin(pinElement, pins[j]));
   }
   return fragment;
 };
