@@ -15,6 +15,7 @@ var AccomodationType = {
   HOUSE: 'Дом',
   PALACE: 'Дворец',
 };
+var adressInput = document.querySelector('#address');
 
 var getRandomFromRange = function (max, min) {
   min = min || 0;
@@ -66,17 +67,26 @@ var getPinData = function (i) {
   return element;
 };
 
-var getPins = function (number) {
-  var dataArray = [];
-  for (var i = 0; i < number; i++) {
-    dataArray.push(getPinData(i));
+var getPinsArray = function () {
+  var pinArray = [];
+  for (var i = 0; i < NUMBER_OF_PINS; i++) {
+    pinArray.push(getPinData(i));
   }
-  return dataArray;
+  return pinArray;
 };
 
-var clearActiveClass = function () {
+var pins = getPinsArray();
+
+var changeActiveClass = function () {
   var userDialog = document.querySelector('.map');
+  var userForm = document.querySelector('.ad-form');
+
   userDialog.classList.remove('map--faded');
+  userForm.classList.remove('ad-form--disabled');
+  var inputs = document.querySelectorAll('.ad-form  input, .ad-form select, .map__filters input, .map__filters select');
+  for (var i = 0; i < inputs.length; i++) {
+    inputs[i].disabled = false;
+  }
 };
 
 var renderPin = function (element, pin) {
@@ -127,18 +137,38 @@ var renderCard = function (pin) {
   return cardElement;
 };
 
-var createPinMapAndCard = function () {
-  clearActiveClass();
-  var pins = getPins(NUMBER_OF_PINS);
+var getType = function (type) {
+  var types = {
+    'palace': 'Дворец ',
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'bungalo': 'Бунгало'
+  };
+  return types[type];
+};
 
+var createPinMapAndCard = function () {
   var pinList = document.querySelector('.map__pins');
   pinList.appendChild(createPinsTemplates(pins));
-
+  // возможно придеться переделать всю функцию на создание карты и отдельно на создание карточки при нажатии
   var cardFragment = document.createDocumentFragment();
+  // фрагмент создаеться при чтении аттрибута дата у нажатого пина.
   cardFragment.appendChild(renderCard(pins[0]));
 
   var cardList = document.querySelector('.map');
   cardList.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
 };
 
-createPinMapAndCard();
+var setAdress = function () {
+  var text = mainPin.style;
+  adressInput.value = text; // должно быть динамическое
+};
+
+var mainPin = document.querySelector('.map__pin--main');
+mainPin.addEventListener('mouseup', function (evt) {
+  changeActiveClass();
+  createPinMapAndCard();
+  // заполнение формы адреса по координатам метки.
+  // при этом их нужно сделать так что бы адресс вычеслялся сразуже при загрузке страницы
+  setAdress();
+});
