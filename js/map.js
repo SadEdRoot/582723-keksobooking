@@ -137,16 +137,6 @@ var renderCard = function (pin) {
   return cardElement;
 };
 
-var getType = function (type) {
-  var types = {
-    'palace': 'Дворец ',
-    'flat': 'Квартира',
-    'house': 'Дом',
-    'bungalo': 'Бунгало'
-  };
-  return types[type];
-};
-
 var createPinMapAndCard = function () {
   var pinList = document.querySelector('.map__pins');
   pinList.appendChild(createPinsTemplates(pins));
@@ -165,7 +155,7 @@ var setAdress = function () {
 };
 
 var mainPin = document.querySelector('.map__pin--main');
-mainPin.addEventListener('mouseup', function (evt) {
+mainPin.addEventListener('mouseup', function () {
   changeActiveClass();
   createPinMapAndCard();
   // заполнение формы адреса по координатам метки.
