@@ -89,19 +89,26 @@ var changeActiveClass = function () {
   }
 };
 
-var renderPin = function (element, pin) {
+var renderPin = function (element, pin, index) {
   var pinElement = element.cloneNode(true);
-  pinElement.style = 'left: ' + (pin.location.x - PIN_WIDTH) + 'px; top: ' + (pin.location.y - PIN_HEIGHT) + 'px;';
+  // pinElement.style = 'left: ' + (pin.location.x - PIN_WIDTH) + 'px; top: ' + (pin.location.y - PIN_HEIGHT) + 'px;';
+  // альтернативное объявление
+  pinElement.style.left = (pin.location.x - PIN_WIDTH) + 'px';
+  pinElement.style.top = (pin.location.y - PIN_HEIGHT) + 'px';
   pinElement.querySelector('img').src = pin.author.avatar;
   pinElement.querySelector('img').alt = pin.offer.title;
+  pinElement.addEventListener('click', function (evt) {
+    cratePinCard(evt.currentTarget);
+  });
+  pinElement.dataset.index = index;
   return pinElement;
 };
 
-var createPinsTemplates = function (pins) {
+var createPinsTemplates = function () {
   var pinElement = document.querySelector('#pin').content.querySelector('.map__pin');
   var fragment = document.createDocumentFragment();
   for (var j = 0; j < pins.length; j++) {
-    fragment.appendChild(renderPin(pinElement, pins[j]));
+    fragment.appendChild(renderPin(pinElement, pins[j], j));
   }
   return fragment;
 };
@@ -137,28 +144,30 @@ var renderCard = function (pin) {
   return cardElement;
 };
 
-var createPinMapAndCard = function () {
+var createPinMap = function () {
   var pinList = document.querySelector('.map__pins');
-  pinList.appendChild(createPinsTemplates(pins));
-  // возможно придеться переделать всю функцию на создание карты и отдельно на создание карточки при нажатии
+  pinList.appendChild(createPinsTemplates());
+};
+
+var cratePinCard = function (target) {
   var cardFragment = document.createDocumentFragment();
   // фрагмент создаеться при чтении аттрибута дата у нажатого пина.
-  cardFragment.appendChild(renderCard(pins[0]));
+  cardFragment.appendChild(renderCard(pins[target.dataset.index]));
 
   var cardList = document.querySelector('.map');
   cardList.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
 };
 
+// переписать нормально
 var setAdress = function () {
   var text = mainPin.style;
-  adressInput.value = text; // должно быть динамическое
+  adressInput.value = (+text.left.slice(0, -2) + 65 / 2) + ', ' + (+text.top.slice(0, -2) + 65 + 11); // должно быть динамическое
 };
 
 var mainPin = document.querySelector('.map__pin--main');
 mainPin.addEventListener('mouseup', function () {
   changeActiveClass();
-  createPinMapAndCard();
+  createPinMap();
   // заполнение формы адреса по координатам метки.
-  // при этом их нужно сделать так что бы адресс вычеслялся сразуже при загрузке страницы
   setAdress();
 });
