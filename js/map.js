@@ -9,13 +9,22 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var NUMBER_OF_PINS = 8;
 var PIN_WIDTH = 25;
 var PIN_HEIGHT = 70;
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+var MAIN_PIN_WIDTH = 34;
+var MAIN_PIN_HEIGHT = 76;
 
 var AccomodationType = {
   BUNGALO: 'Бунгало',
   HOUSE: 'Дом',
   PALACE: 'Дворец',
 };
+
+var mainPin = document.querySelector('.map__pin--main');
 var adressInput = document.querySelector('#address');
+var map = document.querySelector('.map');
+var userForm = document.querySelector('.ad-form');
+var cardList = document.querySelector('.map');
 
 var getRandomFromRange = function (max, min) {
   min = min || 0;
@@ -78,10 +87,7 @@ var getPinsArray = function () {
 var pins = getPinsArray();
 
 var changeActiveClass = function () {
-  var userDialog = document.querySelector('.map');
-  var userForm = document.querySelector('.ad-form');
-
-  userDialog.classList.remove('map--faded');
+  map.classList.remove('map--faded');
   userForm.classList.remove('ad-form--disabled');
   var inputs = document.querySelectorAll('.ad-form  input, .ad-form select, .map__filters input, .map__filters select');
   for (var i = 0; i < inputs.length; i++) {
@@ -99,6 +105,11 @@ var renderPin = function (element, pin, index) {
   pinElement.querySelector('img').alt = pin.offer.title;
   pinElement.addEventListener('click', function (evt) {
     cratePinCard(evt.currentTarget);
+  });
+  pinElement.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      cratePinCard(evt.currentTarget);
+    }
   });
   pinElement.dataset.index = index;
   return pinElement;
@@ -129,6 +140,10 @@ var addPhotosToCard = function (photos) {
   return photo;
 };
 
+var closeCard = function () {
+  cardList.removeChild(cardList.querySelector('.map__card'));
+};
+
 var renderCard = function (pin) {
   var cardElement = document.querySelector('#card').content.querySelector('.map__card').cloneNode(true);
   cardElement.querySelector('.popup__title').textContent = pin.offer.title;
@@ -141,6 +156,14 @@ var renderCard = function (pin) {
   cardElement.querySelector('.popup__description').textContent = pin.offer.description;
   cardElement.querySelector('.popup__photos').innerHTML = addPhotosToCard(pin.offer.photos);
   cardElement.querySelector('.popup__avatar').src = pin.author.avatar;
+  cardElement.querySelector('.popup__close').addEventListener('click', function () {
+    closeCard();
+  });
+  cardElement.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      closeCard();
+    }
+  });
   return cardElement;
 };
 
@@ -150,24 +173,22 @@ var createPinMap = function () {
 };
 
 var cratePinCard = function (target) {
+  if (cardList.querySelector('.map__card') !== null) {
+    closeCard();
+  }
   var cardFragment = document.createDocumentFragment();
-  // фрагмент создаеться при чтении аттрибута дата у нажатого пина.
   cardFragment.appendChild(renderCard(pins[target.dataset.index]));
-
-  var cardList = document.querySelector('.map');
   cardList.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
 };
 
-// переписать нормально
 var setAdress = function () {
-  var text = mainPin.style;
-  adressInput.value = (+text.left.slice(0, -2) + 65 / 2) + ', ' + (+text.top.slice(0, -2) + 65 + 11); // должно быть динамическое
+  var style = mainPin.style;
+  adressInput.value = (Number(style.left.slice(0, -2)) + MAIN_PIN_WIDTH) + ', ' + (Number(style.top.slice(0, -2)) + MAIN_PIN_HEIGHT);
 };
 
-var mainPin = document.querySelector('.map__pin--main');
+
 mainPin.addEventListener('mouseup', function () {
   changeActiveClass();
   createPinMap();
-  // заполнение формы адреса по координатам метки.
   setAdress();
 });
