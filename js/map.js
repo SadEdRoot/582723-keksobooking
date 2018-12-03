@@ -103,11 +103,11 @@ var renderPin = function (element, pin, id) {
   pinFragment.querySelector('img').src = pin.author.avatar;
   pinFragment.querySelector('img').alt = pin.offer.title;
   pinFragment.addEventListener('click', function (evt) {
-    cratePinCard(evt.currentTarget);
+    updateCard(pins[evt.currentTarget.dataset.id]);
   });
   pinFragment.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      cratePinCard(evt.currentTarget);
+      updateCard(pins[evt.currentTarget.dataset.id]);
     }
   });
   pinFragment.dataset.id = id;
@@ -139,7 +139,8 @@ var addPhotosToCard = function (photos) {
 };
 
 var clearCard = function () {
-  cardList.removeChild(cardList.querySelector('.map__card'));
+  cardList.querySelector('.map__card').style.display = 'none';
+  document.removeEventListener('keydown', onCardEscKeyDown);
 };
 
 var onCardElementMouseClick = function (cardElement) {
@@ -148,15 +149,23 @@ var onCardElementMouseClick = function (cardElement) {
   });
 };
 
-var onCardElementKeyDown = function (cardElement) {
-  cardElement.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      clearCard();
-    }
-  });
+var onCardEscKeyDown = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    clearCard();
+  }
 };
-var renderCard = function (pin) {
-  var cardElement = document.querySelector('#card').content.querySelector('.map__card').cloneNode(true);
+
+var addEscKeyDown = function () {
+  document.addEventListener('keydown', onCardEscKeyDown);
+};
+
+var createPinMap = function () {
+  var pinList = document.querySelector('.map__pins');
+  pinList.appendChild(createPinsTemplates());
+};
+
+var updateCard = function (pin) {
+  var cardElement = cardList.querySelector('.map__card');
   cardElement.querySelector('.popup__title').textContent = pin.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = pin.offer.address;
   cardElement.querySelector('.popup__text--price').textContent = pin.offer.price + '₽/ночь';
@@ -167,23 +176,17 @@ var renderCard = function (pin) {
   cardElement.querySelector('.popup__description').textContent = pin.offer.description;
   cardElement.querySelector('.popup__photos').innerHTML = addPhotosToCard(pin.offer.photos);
   cardElement.querySelector('.popup__avatar').src = pin.author.avatar;
-  onCardElementMouseClick(cardElement);
-  onCardElementKeyDown(cardElement);
-  return cardElement;
+  cardList.querySelector('.map__card').style.display = 'block';
+  addEscKeyDown();
 };
 
-var createPinMap = function () {
-  var pinList = document.querySelector('.map__pins');
-  pinList.appendChild(createPinsTemplates());
-};
-
-var cratePinCard = function (target) {
-  if (cardList.querySelector('.map__card') !== null) {
-    clearCard();
-  }
+var cratePinCard = function () {
   var cardFragment = document.createDocumentFragment();
-  cardFragment.appendChild(renderCard(pins[target.dataset.id]));
+  var cardElement = document.querySelector('#card').content.querySelector('.map__card').cloneNode(true);
+  onCardElementMouseClick(cardElement);
+  cardFragment.appendChild(cardElement);
   cardList.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
+  clearCard();
 };
 
 var setAddress = function () {
@@ -193,9 +196,12 @@ var setAddress = function () {
   adressInput.value = (xCoordinate + MAIN_PIN_WIDTH) + ', ' + (yCoordinate + MAIN_PIN_HEIGHT);
 };
 
-
 mainPin.addEventListener('mouseup', function () {
   activateMap();
   createPinMap();
   setAddress();
 });
+
+window.onload = function () {
+  cratePinCard();
+};
