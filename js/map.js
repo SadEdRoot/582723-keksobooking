@@ -205,3 +205,63 @@ mainPin.addEventListener('mouseup', function () {
 window.onload = function () {
   cratePinCard();
 };
+
+var availibelCupacity = {
+  1: [1],
+  2: [2, 1],
+  3: [3, 2, 1],
+  100: [0]
+};
+
+// Блок валидации формы
+var userRoomInput = userForm.querySelector('#room_number');
+var userCapacity = userForm.querySelector('#capacity');
+
+var syncRoomAndCapacity = function () {
+  var room = userRoomInput.value;
+  var capacity = userCapacity.value;
+  if (availibelCupacity[room].indexOf(capacity)) {
+    userCapacity.setCustomValidity('Количество гостей не соотвествует количеству комнат')
+  } else {
+    userCapacity.setCustomValidity('');
+  }
+};
+
+userForm.submit(syncRoomAndCapacity());
+
+/*
+userRoomInput.addEventListener('change', function (event) {
+  room = event.target.value;
+});
+
+userRoomInput.addEventListener('change', function () {
+  capacity = event.target.value;
+});
+*/
+// ставим штуки
+// проверяем
+// удаляем
+/*
+var userNameForm = setup.querySelector('.setup-user-name');
+
+userNameInput.addEventListener('invalid', function () {
+  if (userNameInput.validity.tooShort) {
+    userNameInput.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+  } else if (userNameInput.validity.tooLong) {
+    userNameInput.setCustomValidity('Имя не должно превышать 25-ти символов');
+  } else if (userNameInput.validity.valueMissing) {
+    userNameInput.setCustomValidity('Обязательное поле');
+  } else {
+    userNameInput.setCustomValidity('');
+  }
+});
+
+userNameInput.addEventListener('input', function (evt) {
+  var target = evt.target;
+  if (target.value.length < 2) {
+    target.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+  } else {
+    target.setCustomValidity('');
+  }
+});
+*/
