@@ -18,6 +18,7 @@ var AccomodationType = {
   BUNGALO: 'Бунгало',
   HOUSE: 'Дом',
   PALACE: 'Дворец',
+  FLAT: 'Квартира'
 };
 
 var mainPin = document.querySelector('.map__pin--main');
@@ -208,43 +209,82 @@ window.onload = function () {
 
 
 // Блок валидации формы
-var availibelCupacity = {
-  1: [1],
-  2: [2, 1],
-  3: [3, 2, 1],
-  100: [0]
-};
 
+// Синхронизация поля количество гостей по полю количество комнат
 var userRoomInput = userForm.querySelector('#room_number');
 var userCapacity = userForm.querySelector('#capacity');
-var submitBtn = userForm.querySelector('.ad-form__submit');
 
 var syncRoomAndCapacity = function () {
+  var availibelCupacity = {
+    1: [1],
+    2: [2, 1],
+    3: [3, 2, 1],
+    100: [0]
+  };
   var room = parseInt(userRoomInput.value, 10);
   var capacity = parseInt(userCapacity.value, 10);
   if (availibelCupacity[room].indexOf(capacity) === -1) {
     userCapacity.setCustomValidity('Количество гостей не соотвествует количеству комнат');
-    // userCapacity.style.border = '2px solid red';
-    // оставил закомичееными. сделал вариан через css selector:invalid
   } else {
     userCapacity.setCustomValidity('');
-    // userCapacity.style.border = '';
-
   }
 };
 
-// функция расскараски невалидных полей. переделать в 2 функции с параметрами.
+userRoomInput.addEventListener('change', syncRoomAndCapacity);
+userCapacity.addEventListener('change', syncRoomAndCapacity);
+
+// синхронизация полей время выезда
+var userSelecteTimeIn = document.getElementById('timein');
+var userSelectTimeOut = document.getElementById('timeout');
+
+
+var syncTimeInTimeOut = function (evt) {
+  var timeIn = userSelecteTimeIn.value;
+  var timeOut = userSelectTimeOut.value;
+  if (timeIn !== timeOut) {
+    if (evt.target.name === 'timein') {
+      userSelectTimeOut.value = timeIn;
+    } else {
+      userSelecteTimeIn.value = timeOut;
+    }
+  }
+};
+
+userSelecteTimeIn.addEventListener('change', syncTimeInTimeOut);
+userSelectTimeOut.addEventListener('change', syncTimeInTimeOut);
+
+// синхронизания полей тип жилья и цена
+var userSelectType = document.getElementById('type');
+var userSelectPrice = document.getElementById('price');
+
+var syncTypeWithPrice = function (evt) {
+  var typePrice = {
+    'bungalo': 0,
+    'flat': 1000,
+    'house': 5000,
+    'palace': 10000
+  };
+  userSelectPrice.min = typePrice[evt.target.value];
+};
+
+userSelectType.addEventListener('change', syncTypeWithPrice);
+
+
+// функция расскараски невалидных полей. переделать в 2 функции с параметрами. отправка на форму проверка при отправке
+var submitBtn = userForm.querySelector('.ad-form__submit');
+
 var markError = function () {
   Array.from(userForm.querySelectorAll('select:invalid, input:invalid')).forEach(function (item) {
-    item.style.border = '2px solid red';
+    item.classList.add('error_form');
   });
   Array.from(userForm.querySelectorAll('select:valid, input:valid')).forEach(function (item) {
-    item.style.border = '';
+    item.classList.remove('error_form');
   });
 };
 
 var onSubmitBtnClick = function (evt) {
   syncRoomAndCapacity(); // добавленно что бы отрабатовало без изменения значений.
+  syncTypeWithPrice();
   markError();
   if (userForm.checkValidity()) {
     // отправка формы
@@ -253,13 +293,4 @@ var onSubmitBtnClick = function (evt) {
   }
 };
 
-// добавить изменения на все формы. сделать их ини
-userRoomInput.addEventListener('change', syncRoomAndCapacity);
-userCapacity.addEventListener('change', syncRoomAndCapacity);
 submitBtn.addEventListener('click', onSubmitBtnClick);
-
-// архитектура
-/* делаем следующее
-все завязывем на изменениях и нажатии сабмит.
-*/
-
