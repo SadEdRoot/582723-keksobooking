@@ -282,7 +282,7 @@ var markError = function () {
   });
 };
 
-var onSubmitBtnClick = function (evt) {
+var onSubmitBtnClick = function () {
   syncRoomAndCapacity(); // добавленно что бы отрабатовало без изменения значений.
   syncTypeWithPrice();
   markError();
