@@ -214,13 +214,14 @@ window.onload = function () {
 var userRoomInput = userForm.querySelector('#room_number');
 var userCapacity = userForm.querySelector('#capacity');
 
+var availibelCupacity = {
+  1: [1],
+  2: [2, 1],
+  3: [3, 2, 1],
+  100: [0]
+};
+
 var syncRoomAndCapacity = function () {
-  var availibelCupacity = {
-    1: [1],
-    2: [2, 1],
-    3: [3, 2, 1],
-    100: [0]
-  };
   var room = parseInt(userRoomInput.value, 10);
   var capacity = parseInt(userCapacity.value, 10);
   if (availibelCupacity[room].indexOf(capacity) === -1) {
@@ -238,32 +239,29 @@ var userSelecteTimeIn = document.getElementById('timein');
 var userSelectTimeOut = document.getElementById('timeout');
 
 
-var syncTimeInTimeOut = function (evt) {
-  var timeIn = userSelecteTimeIn.value;
-  var timeOut = userSelectTimeOut.value;
-  if (timeIn !== timeOut) {
-    if (evt.target.name === 'timein') {
-      userSelectTimeOut.value = timeIn;
-    } else {
-      userSelecteTimeIn.value = timeOut;
-    }
-  }
+var syncTimeOut = function () {
+  userSelectTimeOut.value = userSelecteTimeIn.value;
 };
 
-userSelecteTimeIn.addEventListener('change', syncTimeInTimeOut);
-userSelectTimeOut.addEventListener('change', syncTimeInTimeOut);
+var syncTimeIn = function () {
+  userSelecteTimeIn.value = userSelectTimeOut.value;
+};
+
+userSelecteTimeIn.addEventListener('change', syncTimeOut);
+userSelectTimeOut.addEventListener('change', syncTimeIn);
 
 // синхронизания полей тип жилья и цена
 var userSelectType = document.getElementById('type');
 var userSelectPrice = document.getElementById('price');
 
+var typePrice = {
+  'bungalo': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000
+};
+
 var syncTypeWithPrice = function (evt) {
-  var typePrice = {
-    'bungalo': 0,
-    'flat': 1000,
-    'house': 5000,
-    'palace': 10000
-  };
   userSelectPrice.min = typePrice[evt.target.value];
 };
 
@@ -274,10 +272,12 @@ userSelectType.addEventListener('change', syncTypeWithPrice);
 var submitBtn = userForm.querySelector('.ad-form__submit');
 
 var markError = function () {
-  Array.from(userForm.querySelectorAll('select:invalid, input:invalid')).forEach(function (item) {
+  var invalidInputArray = Array.from(userForm.querySelectorAll('select:invalid, input:invalid'))
+  var validInputArray = Array.from(userForm.querySelectorAll('select:valid, input:valid'))
+  invalidInputArray.forEach(function (item) {
     item.classList.add('error_form');
   });
-  Array.from(userForm.querySelectorAll('select:valid, input:valid')).forEach(function (item) {
+  validInputArray.forEach(function (item) {
     item.classList.remove('error_form');
   });
 };
