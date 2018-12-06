@@ -272,8 +272,8 @@ userSelectType.addEventListener('change', syncTypeWithPrice);
 var submitBtn = userForm.querySelector('.ad-form__submit');
 
 var markError = function () {
-  var invalidInputArray = Array.from(userForm.querySelectorAll('select:invalid, input:invalid'))
-  var validInputArray = Array.from(userForm.querySelectorAll('select:valid, input:valid'))
+  var invalidInputArray = Array.from(userForm.querySelectorAll('select:invalid, input:invalid'));
+  var validInputArray = Array.from(userForm.querySelectorAll('select:valid, input:valid'));
   invalidInputArray.forEach(function (item) {
     item.classList.add('error_form');
   });
