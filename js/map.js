@@ -262,7 +262,9 @@ var typePrice = {
 };
 
 var syncTypeWithPrice = function (evt) {
-  userSelectPrice.min = typePrice[evt.target.value];
+  var price = typePrice[evt.target.value];
+  userSelectPrice.min = price;
+  userSelectPrice.placeholder = price;
 };
 
 userSelectType.addEventListener('change', syncTypeWithPrice);
