@@ -206,6 +206,8 @@ window.onload = function () {
   cratePinCard();
 };
 
+
+// Блок валидации формы
 var availibelCupacity = {
   1: [1],
   2: [2, 1],
@@ -213,34 +215,51 @@ var availibelCupacity = {
   100: [0]
 };
 
-// Блок валидации формы
 var userRoomInput = userForm.querySelector('#room_number');
 var userCapacity = userForm.querySelector('#capacity');
+var submitBtn = userForm.querySelector('.ad-form__submit');
 
-var syncRoomAndCapacity = function (evt) {
-  var room = userRoomInput.value;
-  var capacity = userCapacity.value;
+var syncRoomAndCapacity = function () {
+  var room = parseInt(userRoomInput.value, 10);
+  var capacity = parseInt(userCapacity.value, 10);
   if (availibelCupacity[room].indexOf(capacity) === -1) {
-    userCapacity.setCustomValidity('Количество гостей не соотвествует количеству комнат')
+    userCapacity.setCustomValidity('Количество гостей не соотвествует количеству комнат');
+    // userCapacity.style.border = '2px solid red';
+    // оставил закомичееными. сделал вариан через css selector:invalid
   } else {
     userCapacity.setCustomValidity('');
+    // userCapacity.style.border = '';
+
   }
 };
 
-userRoomInput.addEventListener('change', syncRoomAndCapacity);
-userCapacity.addEventListener('change', syncRoomAndCapacity);
-
-var submitBtn = userForm.querySelector('.ad-form__submit');
+// функция расскараски невалидных полей. переделать в 2 функции с параметрами.
+var markError = function () {
+  Array.from(userForm.querySelectorAll('select:invalid, input:invalid')).forEach(function (item) {
+    item.style.border = '2px solid red';
+  });
+  Array.from(userForm.querySelectorAll('select:valid, input:valid')).forEach(function (item) {
+    item.style.border = '';
+  });
+};
 
 var onSubmitBtnClick = function (evt) {
-  evt.preventDefault();
+  syncRoomAndCapacity(); // добавленно что бы отрабатовало без изменения значений.
+  markError();
   if (userForm.checkValidity()) {
     // отправка формы
   } else {
     // добавить красный бордер
-    syncRoomAndCapacity();
   }
 };
 
+// добавить изменения на все формы. сделать их ини
+userRoomInput.addEventListener('change', syncRoomAndCapacity);
+userCapacity.addEventListener('change', syncRoomAndCapacity);
 submitBtn.addEventListener('click', onSubmitBtnClick);
+
+// архитектура
+/* делаем следующее
+все завязывем на изменениях и нажатии сабмит.
+*/
 
