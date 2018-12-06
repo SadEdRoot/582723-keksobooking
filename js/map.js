@@ -217,51 +217,30 @@ var availibelCupacity = {
 var userRoomInput = userForm.querySelector('#room_number');
 var userCapacity = userForm.querySelector('#capacity');
 
-var syncRoomAndCapacity = function () {
+var syncRoomAndCapacity = function (evt) {
   var room = userRoomInput.value;
   var capacity = userCapacity.value;
-  if (availibelCupacity[room].indexOf(capacity)) {
+  if (availibelCupacity[room].indexOf(capacity) === -1) {
     userCapacity.setCustomValidity('Количество гостей не соотвествует количеству комнат')
   } else {
     userCapacity.setCustomValidity('');
   }
 };
 
-userForm.submit(syncRoomAndCapacity());
+userRoomInput.addEventListener('change', syncRoomAndCapacity);
+userCapacity.addEventListener('change', syncRoomAndCapacity);
 
-/*
-userRoomInput.addEventListener('change', function (event) {
-  room = event.target.value;
-});
+var submitBtn = userForm.querySelector('.ad-form__submit');
 
-userRoomInput.addEventListener('change', function () {
-  capacity = event.target.value;
-});
-*/
-// ставим штуки
-// проверяем
-// удаляем
-/*
-var userNameForm = setup.querySelector('.setup-user-name');
-
-userNameInput.addEventListener('invalid', function () {
-  if (userNameInput.validity.tooShort) {
-    userNameInput.setCustomValidity('Имя должно состоять минимум из 2-х символов');
-  } else if (userNameInput.validity.tooLong) {
-    userNameInput.setCustomValidity('Имя не должно превышать 25-ти символов');
-  } else if (userNameInput.validity.valueMissing) {
-    userNameInput.setCustomValidity('Обязательное поле');
+var onSubmitBtnClick = function (evt) {
+  evt.preventDefault();
+  if (userForm.checkValidity()) {
+    // отправка формы
   } else {
-    userNameInput.setCustomValidity('');
+    // добавить красный бордер
+    syncRoomAndCapacity();
   }
-});
+};
 
-userNameInput.addEventListener('input', function (evt) {
-  var target = evt.target;
-  if (target.value.length < 2) {
-    target.setCustomValidity('Имя должно состоять минимум из 2-х символов');
-  } else {
-    target.setCustomValidity('');
-  }
-});
-*/
+submitBtn.addEventListener('click', onSubmitBtnClick);
+
