@@ -11,8 +11,13 @@ var PIN_WIDTH = 25;
 var PIN_HEIGHT = 70;
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
-var MAIN_PIN_WIDTH = 34;
+var MAIN_PIN_WIDTH = 32;
 var MAIN_PIN_HEIGHT = 76;
+var EDGE_MAP_X_MAX = 1200 - MAIN_PIN_WIDTH;
+var EDGE_MAP_X_MIN = 0 - MAIN_PIN_WIDTH;
+var EDGE_MAP_Y_MAX = 630;
+var EDGE_MAP_Y_MIN = 130;
+
 
 var AccomodationType = {
   BUNGALO: 'Бунгало',
@@ -50,8 +55,8 @@ var shuffleArray = function (arr) {
 };
 
 var getPinData = function (i) {
-  var x = getRandomFromRange(1200);
-  var y = getRandomFromRange(630, 130);
+  var x = getRandomFromRange(EDGE_MAP_X_MAX, EDGE_MAP_X_MIN);
+  var y = getRandomFromRange(EDGE_MAP_Y_MAX, EDGE_MAP_Y_MIN);
   var element = {
     'author': {
       'avatar': 'img/avatars/user0' + (i + 1) + '.png',
@@ -297,6 +302,31 @@ var activeMapFlag = false;
       y: evt.clientY
     };
 
+    // наверное можно изменить параметры с координат которыу x,y?
+    var setAddress = function () {
+      var xCoordinate = parseInt(mainPin.style.left, 10);
+      var yCoordinate = parseInt(mainPin.style.top, 10);
+      adressInput.value = (xCoordinate + MAIN_PIN_WIDTH) + ', ' + (yCoordinate + MAIN_PIN_HEIGHT);
+    };
+
+    // функции проверки рамок
+    var checkPositionX = function (x) {
+      if (x < EDGE_MAP_X_MAX && x > EDGE_MAP_X_MIN) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    var checkPositionY = function (y) {
+      if (y < EDGE_MAP_Y_MAX && y > EDGE_MAP_Y_MIN) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
@@ -310,18 +340,19 @@ var activeMapFlag = false;
         y: moveEvt.clientY
       };
 
-      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      var xCoordinate = mainPin.offsetLeft - shift.x;
+      var yCoordinate = mainPin.offsetTop - shift.y;
 
+      if (checkPositionY(yCoordinate)) {
+        mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+      }
+      if (checkPositionX(xCoordinate)) {
+        mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      }
+
+      setAddress();
     };
 
-    // наверное можно изменить параметры с координат которыу x,y
-    var setAddress = function () {
-      var style = mainPin.style;
-      var xCoordinate = parseInt(style.left, 10);
-      var yCoordinate = parseInt(style.top, 10);
-      adressInput.value = (xCoordinate + MAIN_PIN_WIDTH) + ', ' + (yCoordinate + MAIN_PIN_HEIGHT);
-    };
 
     var onMouseUp = function () {
       if (!activeMapFlag) {
