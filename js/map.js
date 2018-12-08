@@ -13,7 +13,7 @@ var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 var MAIN_PIN_WIDTH = 32;
 var MAIN_PIN_HEIGHT = 76;
-var EDGE_MAP_X_MAX = 1200 - MAIN_PIN_WIDTH;
+var EDGE_MAP_X_MAX = document.querySelector('.map').offsetWidth - MAIN_PIN_WIDTH;
 var EDGE_MAP_X_MIN = 0 - MAIN_PIN_WIDTH;
 var EDGE_MAP_Y_MAX = 630;
 var EDGE_MAP_Y_MIN = 130;
@@ -195,6 +195,14 @@ var cratePinCard = function () {
   clearCard();
 };
 
+// наверное можно изменить параметры с координат которыу x,y?
+var setAddress = function () {
+  var xCoordinate = parseInt(mainPin.style.left, 10);
+  var yCoordinate = parseInt(mainPin.style.top, 10);
+  adressInput.value = (xCoordinate + MAIN_PIN_WIDTH) + ', ' + (yCoordinate + MAIN_PIN_HEIGHT);
+};
+
+
 window.onload = function () {
   cratePinCard();
 };
@@ -289,7 +297,7 @@ var onSubmitBtnClick = function () {
 
 submitBtn.addEventListener('click', onSubmitBtnClick);
 
-var activeMapFlag = false;
+var isMapActivated = false;
 
 // функция перемещения главного пина
 (function () {
@@ -301,31 +309,6 @@ var activeMapFlag = false;
       x: evt.clientX,
       y: evt.clientY
     };
-
-    // наверное можно изменить параметры с координат которыу x,y?
-    var setAddress = function () {
-      var xCoordinate = parseInt(mainPin.style.left, 10);
-      var yCoordinate = parseInt(mainPin.style.top, 10);
-      adressInput.value = (xCoordinate + MAIN_PIN_WIDTH) + ', ' + (yCoordinate + MAIN_PIN_HEIGHT);
-    };
-
-    // функции проверки рамок
-    var checkPositionX = function (x) {
-      if (x < EDGE_MAP_X_MAX && x > EDGE_MAP_X_MIN) {
-        return true;
-      } else {
-        return false;
-      }
-    };
-
-    var checkPositionY = function (y) {
-      if (y < EDGE_MAP_Y_MAX && y > EDGE_MAP_Y_MIN) {
-        return true;
-      } else {
-        return false;
-      }
-    };
-
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
@@ -343,10 +326,10 @@ var activeMapFlag = false;
       var xCoordinate = mainPin.offsetLeft - shift.x;
       var yCoordinate = mainPin.offsetTop - shift.y;
 
-      if (checkPositionY(yCoordinate)) {
+      if (yCoordinate < EDGE_MAP_Y_MAX && yCoordinate > EDGE_MAP_Y_MIN) {
         mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
       }
-      if (checkPositionX(xCoordinate)) {
+      if (xCoordinate < EDGE_MAP_X_MAX && xCoordinate > EDGE_MAP_X_MIN) {
         mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
       }
 
@@ -355,10 +338,10 @@ var activeMapFlag = false;
 
 
     var onMouseUp = function () {
-      if (!activeMapFlag) {
+      if (!isMapActivated) {
         activateMap();
         createPinMap();
-        activeMapFlag = true;
+        isMapActivated = true;
       }
 
       setAddress();
