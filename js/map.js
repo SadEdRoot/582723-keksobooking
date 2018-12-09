@@ -11,8 +11,13 @@ var PIN_WIDTH = 25;
 var PIN_HEIGHT = 70;
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
-var MAIN_PIN_WIDTH = 34;
+var MAIN_PIN_WIDTH = 32;
 var MAIN_PIN_HEIGHT = 76;
+var EDGE_MAP_X_MAX = document.querySelector('.map').offsetWidth - MAIN_PIN_WIDTH;
+var EDGE_MAP_X_MIN = 0 - MAIN_PIN_WIDTH;
+var EDGE_MAP_Y_MAX = 630;
+var EDGE_MAP_Y_MIN = 130;
+
 
 var AccomodationType = {
   BUNGALO: 'Бунгало',
@@ -50,8 +55,8 @@ var shuffleArray = function (arr) {
 };
 
 var getPinData = function (i) {
-  var x = getRandomFromRange(1200);
-  var y = getRandomFromRange(630, 130);
+  var x = getRandomFromRange(EDGE_MAP_X_MAX, EDGE_MAP_X_MIN);
+  var y = getRandomFromRange(EDGE_MAP_Y_MAX, EDGE_MAP_Y_MIN);
   var element = {
     'author': {
       'avatar': 'img/avatars/user0' + (i + 1) + '.png',
@@ -190,18 +195,13 @@ var cratePinCard = function () {
   clearCard();
 };
 
+// наверное можно изменить параметры с координат которыу x,y?
 var setAddress = function () {
-  var style = mainPin.style;
-  var xCoordinate = parseInt(style.left, 10);
-  var yCoordinate = parseInt(style.top, 10);
+  var xCoordinate = parseInt(mainPin.style.left, 10);
+  var yCoordinate = parseInt(mainPin.style.top, 10);
   adressInput.value = (xCoordinate + MAIN_PIN_WIDTH) + ', ' + (yCoordinate + MAIN_PIN_HEIGHT);
 };
 
-mainPin.addEventListener('mouseup', function () {
-  activateMap();
-  createPinMap();
-  setAddress();
-});
 
 window.onload = function () {
   cratePinCard();
@@ -296,3 +296,61 @@ var onSubmitBtnClick = function () {
 };
 
 submitBtn.addEventListener('click', onSubmitBtnClick);
+
+var isMapActivated = false;
+
+// функция перемещения главного пина
+(function () {
+  mainPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      var xCoordinate = mainPin.offsetLeft - shift.x;
+      var yCoordinate = mainPin.offsetTop - shift.y;
+
+      if (yCoordinate < EDGE_MAP_Y_MAX && yCoordinate > EDGE_MAP_Y_MIN) {
+        mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+      }
+      if (xCoordinate < EDGE_MAP_X_MAX && xCoordinate > EDGE_MAP_X_MIN) {
+        mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      }
+
+      setAddress();
+    };
+
+
+    var onMouseUp = function () {
+      if (!isMapActivated) {
+        activateMap();
+        createPinMap();
+        isMapActivated = true;
+      }
+
+      setAddress();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+})();
