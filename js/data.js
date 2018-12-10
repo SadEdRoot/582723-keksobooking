@@ -4,15 +4,12 @@
 
 (function () {
 
-  var pins = getPinsInstances(NUMBER_OF_PINS);
-
   var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
   var TYPES = ['palace', 'flat', 'house', 'bungalo'];
   var CHECK_IN_TIMES = ['12:00', '13:00', '14:00'];
   var CHECK_OUT_TIMES = ['12:00', '13:00', '14:00'];
   var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var NUMBER_OF_PINS = 8;
 
   var getRandomFromRange = function (max, min) {
     min = min || 0;
@@ -36,8 +33,8 @@
   };
 
   var getPinData = function (i) {
-    var x = getRandomFromRange(window.utils.EDGE_MAP_X_MAX, window.utils.EDGE_MAP_X_MIN);
-    var y = getRandomFromRange(window.utils.EDGE_MAP_Y_MAX, window.utils.EDGE_MAP_Y_MIN);
+    var x = getRandomFromRange(window.map.EDGE_MAP_X_MAX, window.map.EDGE_MAP_X_MIN);
+    var y = getRandomFromRange(window.map.EDGE_MAP_Y_MAX, window.map.EDGE_MAP_Y_MIN);
     var element = {
       'author': {
         'avatar': 'img/avatars/user0' + (i + 1) + '.png',

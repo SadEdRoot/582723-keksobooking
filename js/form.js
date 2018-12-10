@@ -3,9 +3,8 @@
 // Синхронизация поля количество гостей по полю количество комнат
 
 (function () {
-  var userForm = document.querySelector('.ad-form');
-  var userRoomInput = userForm.querySelector('#room_number');
-  var userCapacity = userForm.querySelector('#capacity');
+  var userRoomInput = window.map.userForm.querySelector('#room_number');
+  var userCapacity = window.map.userForm.querySelector('#capacity');
 
   var availibelCupacity = {
     1: [1],
@@ -64,11 +63,11 @@
 
 
   // функция расскараски невалидных полей. переделать в 2 функции с параметрами. отправка на форму проверка при отправке
-  var submitBtn = userForm.querySelector('.ad-form__submit');
+  var submitBtn = window.map.userForm.querySelector('.ad-form__submit');
 
   var markError = function () {
-    var invalidInputArray = Array.from(userForm.querySelectorAll('select:invalid, input:invalid'));
-    var validInputArray = Array.from(userForm.querySelectorAll('select:valid, input:valid'));
+    var invalidInputArray = Array.from(window.map.userForm.querySelectorAll('select:invalid, input:invalid'));
+    var validInputArray = Array.from(window.map.userForm.querySelectorAll('select:valid, input:valid'));
     invalidInputArray.forEach(function (item) {
       item.classList.add('error_form');
     });
@@ -81,7 +80,7 @@
     syncRoomAndCapacity(); // добавленно что бы отрабатовало без изменения значений.
     syncTypeWithPrice();
     markError();
-    if (userForm.checkValidity()) {
+    if (window.map.userForm.checkValidity()) {
       // отправка формы
     } else {
       // добавить красный бордер

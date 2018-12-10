@@ -27,10 +27,10 @@
       var xCoordinate = window.map.mainPin.offsetLeft - shift.x;
       var yCoordinate = window.map.mainPin.offsetTop - shift.y;
 
-      if (yCoordinate < window.utils.EDGE_MAP_Y_MAX && yCoordinate > window.utils.EDGE_MAP_Y_MIN) {
+      if (yCoordinate < window.map.EDGE_MAP_Y_MAX && yCoordinate > window.map.EDGE_MAP_Y_MIN) {
         window.map.mainPin.style.top = (window.map.mainPin.offsetTop - shift.y) + 'px';
       }
-      if (xCoordinate < window.utils.EDGE_MAP_X_MAX && xCoordinate > window.utils.EDGE_MAP_X_MIN) {
+      if (xCoordinate < window.map.EDGE_MAP_X_MAX && xCoordinate > window.map.EDGE_MAP_X_MIN) {
         window.map.mainPin.style.left = (window.map.mainPin.offsetLeft - shift.x) + 'px';
       }
 
@@ -41,7 +41,7 @@
     var onMouseUp = function () {
       if (!window.map.isMapActivated) {
         window.map.activateMap();
-        window.map.createPinMap();
+        window.pins.createPinMap();
         window.map.isMapActivated = true;
       }
 
