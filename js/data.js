@@ -20,6 +20,7 @@
     window.data.pins = pins;
     window.pins.createPinMap();
   };
+
   var errorHandler = function (errorMassage) {
     console.log(errorMassage);
   };
@@ -55,8 +56,6 @@
     return element;
   };
   */
-
-
 
   var getPinsInstances = function () {
     window.backend.load(successHandler, errorHandler);
