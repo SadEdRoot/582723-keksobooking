@@ -10,8 +10,6 @@
 
   var pinElement = document.querySelector('#pin').content.querySelector('.map__pin');
 
-  //var pins = window.data.getPinsInstances(NUMBER_OF_PINS);
-
   var renderPin = function (element, pin, id) {
     // где то здесь должна быть проверка на правильность отрисовки окон
     var pinFragment = element.cloneNode(true);
