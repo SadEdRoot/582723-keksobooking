@@ -6,14 +6,13 @@
   var NUMBER_OF_PINS = 8;
   var PIN_WIDTH = 25;
   var PIN_HEIGHT = 70;
-
   var ENTER_KEYCODE = 13;
 
   var pinElement = document.querySelector('#pin').content.querySelector('.map__pin');
 
+  //var pins = window.data.getPinsInstances(NUMBER_OF_PINS);
+
   var renderPin = function (element, pin, id) {
-    // перенес создание массива с данными сюда что бы было в контексте функции
-    var pins = window.data.getPinsInstances(NUMBER_OF_PINS);
     // где то здесь должна быть проверка на правильность отрисовки окон
     var pinFragment = element.cloneNode(true);
     pinFragment.style.left = (pin.location.x - PIN_WIDTH) + 'px';
@@ -21,20 +20,20 @@
     pinFragment.querySelector('img').src = pin.author.avatar;
     pinFragment.querySelector('img').alt = pin.offer.title;
     pinFragment.addEventListener('click', function (evt) {
-      window.map.updateCard(pins[evt.currentTarget.dataset.id]);
+      window.map.updateCard(window.data.pins[evt.currentTarget.dataset.id]);
     });
     pinFragment.addEventListener('keydown', function (evt) {
       if (evt.keyCode === ENTER_KEYCODE) {
-        window.map.updateCard(pins[evt.currentTarget.dataset.id]);
+        window.map.updateCard(window.data.pins[evt.currentTarget.dataset.id]);
       }
     });
     pinFragment.dataset.id = id;
     return pinFragment;
   };
 
-  var createPinsTemplates = function () {
+  var createPinsTemplates = function (pins) {
     var fragment = document.createDocumentFragment();
-    for (var j = 0; j < pins.length; j++) {
+    for (var j = 0; j < NUMBER_OF_PINS; j++) {
       fragment.appendChild(renderPin(pinElement, pins[j], j));
     }
     return fragment;
@@ -42,7 +41,7 @@
 
   var createPinMap = function () {
     var pinList = document.querySelector('.map__pins');
-    pinList.appendChild(createPinsTemplates());
+    pinList.appendChild(createPinsTemplates(window.data.pins));
   };
 
   window.pins = {

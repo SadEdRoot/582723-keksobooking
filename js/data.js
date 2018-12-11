@@ -10,14 +10,19 @@
   var CHECK_OUT_TIMES = ['12:00', '13:00', '14:00'];
   var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
-  var successHandler = function (pins) {
-    console.log(pins);
+  //var pins = [];
+
+  var successHandler = function (resolve) {
+    var pins = resolve;
+    window.data.pins = pins;
+    /*
     var pinArray = [];
     for (var i = 0; i < numberOfPins; i++) {
       pinArray.push(pins[i]);
       // pinArray.push(getPinData(i));
     }
-    return pinArray;
+    */
+    window.pins.createPinMap();
     //return pins;
   };
   var errorHandler = function (errorMassage) {
@@ -56,9 +61,8 @@
   };
   */
 
-  var getPinsInstances = function (numberOfPins) {
-    return window.backend.load(successHandler, errorHandler);
-
+  var getPinsInstances = function () {
+    window.backend.load(successHandler, errorHandler);
   };
 
   window.data = {

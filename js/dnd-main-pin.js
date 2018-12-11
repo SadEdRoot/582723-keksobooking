@@ -5,7 +5,7 @@
   window.map.mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-
+    // начальные координаты движения
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
@@ -37,11 +37,10 @@
       window.map.setAddress();
     };
 
-
     var onMouseUp = function () {
       if (!window.map.isMapActivated) {
         window.map.activateMap();
-        window.pins.createPinMap();
+        window.data.getPinsInstances();
         window.card.cratePinCard();
         window.map.isMapActivated = true;
       }
