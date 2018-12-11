@@ -10,6 +10,13 @@
   var EDGE_MAP_Y_MAX = 630;
   var EDGE_MAP_Y_MIN = 130;
 
+  var AccomodationType = {
+    BUNGALO: 'Бунгало',
+    HOUSE: 'Дом',
+    PALACE: 'Дворец',
+    FLAT: 'Квартира'
+  };
+
   var cardList = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
   var adressInput = document.querySelector('#address');
@@ -23,6 +30,43 @@
     inputs.forEach(function (item) {
       item.disabled = false;
     });
+  };
+
+  var addEscKeyDown = function () {
+    document.addEventListener('keydown', window.card.onCardEscKeyDown);
+  };
+
+  var addFeaturesToCard = function (features) {
+    var feature = '';
+    for (var i = 0; i < features.length; i++) {
+      feature += '<li class="popup__feature popup__feature--' + features[i] + '"></li>';
+    }
+    return feature;
+  };
+
+  var addPhotosToCard = function (photos) {
+    var photo = '';
+    for (var i = 0; i < photos.length; i++) {
+      photo += '<img src="' + photos[i] + '" class="popup__photo" width="45" height="40" alt="Фотография жилья"></img>';
+    }
+    return photo;
+  };
+
+
+  var updateCard = function (pin) {
+    var cardElement = cardList.querySelector('.map__card');
+    cardElement.querySelector('.popup__title').textContent = pin.offer.title;
+    cardElement.querySelector('.popup__text--address').textContent = pin.offer.address;
+    cardElement.querySelector('.popup__text--price').textContent = pin.offer.price + '₽/ночь';
+    cardElement.querySelector('.popup__type').textContent = AccomodationType[pin.offer.type];
+    cardElement.querySelector('.popup__text--capacity').textContent = pin.offer.rooms + ' комнаты для ' + pin.offer.guests + ' гостей';
+    cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + pin.offer.checkin + ', выезд до ' + pin.offer.checkout;
+    cardElement.querySelector('.popup__features').innerHTML = addFeaturesToCard(pin.offer.features);
+    cardElement.querySelector('.popup__description').textContent = pin.offer.description;
+    cardElement.querySelector('.popup__photos').innerHTML = addPhotosToCard(pin.offer.photos);
+    cardElement.querySelector('.popup__avatar').src = pin.author.avatar;
+    cardList.querySelector('.map__card').style.display = 'block';
+    addEscKeyDown();
   };
 
   // наверное можно изменить параметры с координат которыу x,y?
@@ -45,7 +89,8 @@
     EDGE_MAP_X_MIN: EDGE_MAP_X_MIN,
     EDGE_MAP_Y_MAX: EDGE_MAP_Y_MAX,
     EDGE_MAP_Y_MIN: EDGE_MAP_Y_MIN,
-    userForm: userForm
+    userForm: userForm,
+    updateCard: updateCard
   };
 })();
 

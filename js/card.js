@@ -28,9 +28,8 @@
   };
 
   window.card = {
-    onCardEscKeyDown: onCardEscKeyDown
+    onCardEscKeyDown: onCardEscKeyDown,
+    cratePinCard: cratePinCard
   };
-
-  cratePinCard();
 
 })();
