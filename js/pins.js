@@ -9,11 +9,12 @@
 
   var ENTER_KEYCODE = 13;
 
-  var pins = window.data.getPinsInstances(NUMBER_OF_PINS);
-
   var pinElement = document.querySelector('#pin').content.querySelector('.map__pin');
 
   var renderPin = function (element, pin, id) {
+    // перенес создание массива с данными сюда что бы было в контексте функции
+    var pins = window.data.getPinsInstances(NUMBER_OF_PINS);
+    // где то здесь должна быть проверка на правильность отрисовки окон
     var pinFragment = element.cloneNode(true);
     pinFragment.style.left = (pin.location.x - PIN_WIDTH) + 'px';
     pinFragment.style.top = (pin.location.y - PIN_HEIGHT) + 'px';

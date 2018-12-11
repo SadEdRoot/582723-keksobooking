@@ -10,6 +10,22 @@
   var CHECK_OUT_TIMES = ['12:00', '13:00', '14:00'];
   var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
+  var successHandler = function (pins) {
+    console.log(pins);
+    var pinArray = [];
+    for (var i = 0; i < numberOfPins; i++) {
+      pinArray.push(pins[i]);
+      // pinArray.push(getPinData(i));
+    }
+    return pinArray;
+    //return pins;
+  };
+  var errorHandler = function (errorMassage) {
+    console.log(errorMassage);
+  };
+
+  // функция заполняющая массив с данным в нее мы запихиваем другую тему.
+  /*
   var getPinData = function (i) {
     var x = window.utils.getRandomFromRange(window.map.EDGE_MAP_X_MAX, window.map.EDGE_MAP_X_MIN);
     var y = window.utils.getRandomFromRange(window.map.EDGE_MAP_Y_MAX, window.map.EDGE_MAP_Y_MIN);
@@ -38,13 +54,11 @@
     };
     return element;
   };
+  */
 
   var getPinsInstances = function (numberOfPins) {
-    var pinArray = [];
-    for (var i = 0; i < numberOfPins; i++) {
-      pinArray.push(getPinData(i));
-    }
-    return pinArray;
+    return window.backend.load(successHandler, errorHandler);
+
   };
 
   window.data = {
