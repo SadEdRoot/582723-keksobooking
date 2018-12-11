@@ -1248,3 +1248,7 @@ fieldset {
   outline: none;
   opacity: 0.6;
 }
+
+.error_form {
+  box-shadow: 0 0 3pt 2pt red;
+}
