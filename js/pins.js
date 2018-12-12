@@ -2,13 +2,17 @@
 
 (function () {
   // данные для создания пина
-
   var NUMBER_OF_PINS = 8;
   var PIN_WIDTH = 25;
   var PIN_HEIGHT = 70;
   var ENTER_KEYCODE = 13;
 
   var pinElement = document.querySelector('#pin').content.querySelector('.map__pin');
+
+  var updatePinClass = function (element) {
+    window.utils.removeClass('map__pin--active');
+    element.classList.add('map__pin--active');
+  };
 
   var renderPin = function (element, pin, id) {
     // где то здесь должна быть проверка на правильность отрисовки окон
@@ -18,10 +22,14 @@
     pinFragment.querySelector('img').src = pin.author.avatar;
     pinFragment.querySelector('img').alt = pin.offer.title;
     pinFragment.addEventListener('click', function (evt) {
+      // функция обновления класса пина
+      updatePinClass(evt.currentTarget);
       window.map.updateCard(window.data.pins[evt.currentTarget.dataset.id]);
     });
     pinFragment.addEventListener('keydown', function (evt) {
       if (evt.keyCode === ENTER_KEYCODE) {
+        // функция обновления класса пина
+        updatePinClass(evt.currentTarget);
         window.map.updateCard(window.data.pins[evt.currentTarget.dataset.id]);
       }
     });

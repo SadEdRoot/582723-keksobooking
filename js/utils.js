@@ -24,9 +24,17 @@
     return bufferArray;
   };
 
+  var removeClass = function (className) {
+    var elementWithClass = document.querySelector('.' + className);
+    if (elementWithClass) {
+      elementWithClass.classList.remove(className);
+    }
+  };
+
   window.utils = {
     getRandomFromRange: getRandomFromRange,
     getRandomLenghtFeatures: getRandomLenghtFeatures,
-    shuffleArray: shuffleArray
+    shuffleArray: shuffleArray,
+    removeClass: removeClass
   };
 })();

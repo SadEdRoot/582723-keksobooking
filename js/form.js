@@ -78,14 +78,18 @@
 
   var onSubmitBtnClick = function () {
     syncRoomAndCapacity(); // добавленно что бы отрабатовало без изменения значений.
-    syncTypeWithPrice();
+    // syncTypeWithPrice();
     markError();
     if (window.map.userForm.checkValidity()) {
       // отправка формы
     } else {
       // добавить красный бордер
     }
+    // evt.preventDefault();
   };
 
-  submitBtn.addEventListener('click', onSubmitBtnClick);
+  //submitBtn.addEventListener('click', onSubmitBtnClick);
+
+  window.map.userForm.addEventListener('submit', onSubmitBtnClick);
+
 })();

@@ -6,6 +6,7 @@
   var ESC_KEYCODE = 27;
 
   var clearCard = function () {
+    window.utils.removeClass('map__pin--active');
     window.map.cardList.querySelector('.map__card').style.display = 'none';
     document.removeEventListener('keydown', onCardEscKeyDown);
   };
