@@ -73,17 +73,16 @@
     });
   };
 
-  var onError = function (errorMassage) {
-    // Добавьте обработку возможных ошибок при загрузке: покажите сообщение об ошибке в блоке main, используя блок #error из шаблона template.
+  var onError = function () {
+    // Добавьте обработку возможных ошибок при загрузке: покажите сообщение об ошибке в блоке main, используя блок #error из шаблона template
     window.utils.createErrorMessage();
   };
 
   var onSuccess = function () {
-    window.map.deactivateMap();
     window.map.userForm.reset();
-    // вызов окна сообщения о красоте.
+    // вызов окна сообщения о успехе
     window.utils.createSuccessMessage();
-  }
+  };
 
   var onSubmit = function (evt) {
     evt.preventDefault();
@@ -93,8 +92,7 @@
   };
 
   var onReset = function () {
-    console.log('тут типа приведение формы в исходное состояние и не написанный код привидения в неактивное состояние окно');
-
+    window.map.deactivateMap();
   };
 
   window.map.userForm.addEventListener('submit', onSubmit);

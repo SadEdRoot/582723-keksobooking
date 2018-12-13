@@ -17,10 +17,10 @@
     FLAT: 'Квартира'
   };
 
-  var cardList = document.querySelector('.map');
-  var mainPin = document.querySelector('.map__pin--main');
-  var adressInput = document.querySelector('#address');
   var map = document.querySelector('.map');
+  var mapPins = document.querySelector('.map__pins');
+  var mainPin = mapPins.querySelector('.map__pin--main');
+  var adressInput = document.querySelector('#address');
   var userForm = document.querySelector('.ad-form');
 
   var activateMap = function () {
@@ -31,6 +31,29 @@
       item.disabled = false;
     });
   };
+
+  var disabledAllForm = function () {
+    map.classList.add('map--faded');
+    userForm.classList.add('ad-form--disabled');
+    var inputs = document.querySelectorAll('.ad-form  input, .ad-form select, .map__filters input, .map__filters select');
+    inputs.forEach(function (item) {
+      item.disabled = true;
+    });
+  };
+
+  var deactivateMap = function () {
+    // начальные координа ты пина
+    mainPin.style = 'left: 570px; top: 375px';
+    setAddress();
+    window.card.clearCard();
+    Array.from(mapPins.querySelectorAll('.map__pin')).forEach(function (pin) {
+      if (!pin.classList.contains('map__pin--main')) {
+        mapPins.removeChild(pin);
+      }
+    });
+    disabledAllForm();
+  };
+
 
   var addEscKeyDown = function () {
     document.addEventListener('keydown', window.card.onCardEscKeyDown);
@@ -52,18 +75,9 @@
     return photo;
   };
 
-  var deactivateMap = function () {
-    // начальные координа ты пина
-    // style="left: 570px; top: 375px;
-
-    /* все заполненные поля стираются, метки похожих объявлений и
-    карточка активного объявления удаляются, метка адреса возвращается в исходное положение,
-    значение поля адреса корректируется соответственно положению метки. Показывается сообщение об успешной отправке формы*/
-  };
-
   // функция обновления карточки активного пина
   var updateCard = function (pin) {
-    var cardElement = cardList.querySelector('.map__card');
+    var cardElement = map.querySelector('.map__card');
     cardElement.querySelector('.popup__title').textContent = pin.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = pin.offer.address;
     cardElement.querySelector('.popup__text--price').textContent = pin.offer.price + '₽/ночь';
@@ -74,7 +88,7 @@
     cardElement.querySelector('.popup__description').textContent = pin.offer.description;
     cardElement.querySelector('.popup__photos').innerHTML = addPhotosToCard(pin.offer.photos);
     cardElement.querySelector('.popup__avatar').src = pin.author.avatar;
-    cardList.querySelector('.map__card').style.display = 'block';
+    map.querySelector('.map__card').style.display = 'block';
     addEscKeyDown();
   };
 
@@ -94,7 +108,8 @@
     deactivateMap: deactivateMap,
     setAddress: setAddress,
     isMapActivated: isMapActivated,
-    cardList: cardList,
+    map: map,
+    mapPins: mapPins,
     EDGE_MAP_X_MAX: EDGE_MAP_X_MAX,
     EDGE_MAP_X_MIN: EDGE_MAP_X_MIN,
     EDGE_MAP_Y_MAX: EDGE_MAP_Y_MAX,

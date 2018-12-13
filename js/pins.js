@@ -15,20 +15,17 @@
   };
 
   var renderPin = function (element, pin, id) {
-    // где то здесь должна быть проверка на правильность отрисовки окон
     var pinFragment = element.cloneNode(true);
     pinFragment.style.left = (pin.location.x - PIN_WIDTH) + 'px';
     pinFragment.style.top = (pin.location.y - PIN_HEIGHT) + 'px';
     pinFragment.querySelector('img').src = pin.author.avatar;
     pinFragment.querySelector('img').alt = pin.offer.title;
     pinFragment.addEventListener('click', function (evt) {
-      // функция обновления класса пина
       updatePinClass(evt.currentTarget);
       window.map.updateCard(window.data.pins[evt.currentTarget.dataset.id]);
     });
     pinFragment.addEventListener('keydown', function (evt) {
       if (evt.keyCode === ENTER_KEYCODE) {
-        // функция обновления класса пина
         updatePinClass(evt.currentTarget);
         window.map.updateCard(window.data.pins[evt.currentTarget.dataset.id]);
       }
@@ -46,8 +43,7 @@
   };
 
   var createPinMap = function () {
-    var pinList = document.querySelector('.map__pins');
-    pinList.appendChild(createPinsTemplates(window.data.pins));
+    window.map.mapPins.appendChild(createPinsTemplates(window.data.pins));
   };
 
   window.pins = {

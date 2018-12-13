@@ -13,7 +13,8 @@
   };
 
   var errorHandler = function (errorMassage) {
-    console.log(errorMassage);
+    window.utils.createErrorMessage(errorMassage);
+
   };
 
   var getPinsInstances = function () {

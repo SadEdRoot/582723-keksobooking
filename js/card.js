@@ -7,18 +7,17 @@
 
   var clearCard = function () {
     window.utils.removeClass('map__pin--active');
-    window.map.cardList.querySelector('.map__card').style.display = 'none';
+    window.map.map.querySelector('.map__card').style.display = 'none';
     document.removeEventListener('keydown', onCardEscKeyDown);
   };
 
 
- // переписать на utils.
+  // переписать на utils.
   var onCardEscKeyDown = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       clearCard();
     }
   };
-
 
 
   var cratePinCard = function () {
@@ -28,13 +27,14 @@
       clearCard();
     });
     cardFragment.appendChild(cardElement);
-    window.map.cardList.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
+    window.map.map.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
     clearCard();
   };
 
   window.card = {
     onCardEscKeyDown: onCardEscKeyDown,
-    cratePinCard: cratePinCard
+    cratePinCard: cratePinCard,
+    clearCard: clearCard
   };
 
 })();
