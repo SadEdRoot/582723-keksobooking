@@ -45,14 +45,14 @@
     // начальные координа ты пина
     mainPin.style = 'left: 570px; top: 375px';
     setAddress();
-    window.card.clearCard();
+    map.removeChild(document.querySelector('.map__card'));
     Array.from(mapPins.querySelectorAll('.map__pin')).forEach(function (pin) {
       if (!pin.classList.contains('map__pin--main')) {
         mapPins.removeChild(pin);
       }
     });
     disabledAllForm();
-    isMapActivated = true;
+    window.map.isMapActivated = false;
   };
 
 
@@ -100,15 +100,12 @@
     adressInput.value = (xCoordinate + MAIN_PIN_WIDTH) + ', ' + (yCoordinate + MAIN_PIN_HEIGHT);
   };
 
-  // глобальный флаг
-  var isMapActivated = false;
-
   window.map = {
     mainPin: mainPin,
     activateMap: activateMap,
     deactivateMap: deactivateMap,
     setAddress: setAddress,
-    isMapActivated: isMapActivated,
+    isMapActivated: false, // глобальный флаг
     map: map,
     mapPins: mapPins,
     EDGE_MAP_X_MAX: EDGE_MAP_X_MAX,
