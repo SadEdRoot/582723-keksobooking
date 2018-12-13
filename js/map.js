@@ -52,6 +52,7 @@
       }
     });
     disabledAllForm();
+    isMapActivated = true;
   };
 
 
