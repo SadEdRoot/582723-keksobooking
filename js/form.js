@@ -54,16 +54,13 @@
   };
 
   var syncTypeWithPrice = function (evt) {
+
     var price = typePrice[evt.target.value];
     userSelectPrice.min = price;
     userSelectPrice.placeholder = price;
   };
-
+  // кажеться нужно сделать еще одну утилиту что бы синхронизовать форму при
   userSelectType.addEventListener('change', syncTypeWithPrice);
-
-
-  // функция расскараски невалидных полей. переделать в 2 функции с параметрами. отправка на форму проверка при отправке
-  var submitBtn = window.map.userForm.querySelector('.ad-form__submit');
 
   var markError = function () {
     var invalidInputArray = Array.from(window.map.userForm.querySelectorAll('select:invalid, input:invalid'));
@@ -76,20 +73,32 @@
     });
   };
 
-  var onSubmitBtnClick = function () {
-    syncRoomAndCapacity(); // добавленно что бы отрабатовало без изменения значений.
-    // syncTypeWithPrice();
-    markError();
-    if (window.map.userForm.checkValidity()) {
-      // отправка формы
-    } else {
-      // добавить красный бордер
-    }
-    // evt.preventDefault();
+  var onError = function (errorMassage) {
+    // Добавьте обработку возможных ошибок при загрузке: покажите сообщение об ошибке в блоке main, используя блок #error из шаблона template.
+    window.utils.createErrorMessage();
   };
 
-  //submitBtn.addEventListener('click', onSubmitBtnClick);
+  var onSuccess = function () {
+    window.map.deactivateMap();
+    window.map.userForm.reset();
+    // вызов окна сообщения о красоте.
+    window.utils.createSuccessMessage();
+  }
 
-  window.map.userForm.addEventListener('submit', onSubmitBtnClick);
+  var onSubmit = function (evt) {
+    evt.preventDefault();
+    syncRoomAndCapacity(); // эту команду нужно сделать во время проверки а не во время сабмита. сабмит уже отправляет данные.
+    markError(); // вообще не нужна по идеи
+    window.backend.save(new FormData(window.map.userForm), onSuccess, onError);
+  };
+
+  var onReset = function () {
+    console.log('тут типа приведение формы в исходное состояние и не написанный код привидения в неактивное состояние окно');
+
+  };
+
+  window.map.userForm.addEventListener('submit', onSubmit);
+  window.map.userForm.addEventListener('reset', onReset);
 
 })();
+

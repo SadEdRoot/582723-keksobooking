@@ -52,7 +52,16 @@
     return photo;
   };
 
+  var deactivateMap = function () {
+    // начальные координа ты пина
+    // style="left: 570px; top: 375px;
 
+    /* все заполненные поля стираются, метки похожих объявлений и
+    карточка активного объявления удаляются, метка адреса возвращается в исходное положение,
+    значение поля адреса корректируется соответственно положению метки. Показывается сообщение об успешной отправке формы*/
+  };
+
+  // функция обновления карточки активного пина
   var updateCard = function (pin) {
     var cardElement = cardList.querySelector('.map__card');
     cardElement.querySelector('.popup__title').textContent = pin.offer.title;
@@ -82,6 +91,7 @@
   window.map = {
     mainPin: mainPin,
     activateMap: activateMap,
+    deactivateMap: deactivateMap,
     setAddress: setAddress,
     isMapActivated: isMapActivated,
     cardList: cardList,

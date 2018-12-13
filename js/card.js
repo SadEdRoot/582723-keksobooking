@@ -11,11 +11,15 @@
     document.removeEventListener('keydown', onCardEscKeyDown);
   };
 
+
+ // переписать на utils.
   var onCardEscKeyDown = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       clearCard();
     }
   };
+
+
 
   var cratePinCard = function () {
     var cardFragment = document.createDocumentFragment();
