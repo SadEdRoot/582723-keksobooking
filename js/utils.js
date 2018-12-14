@@ -5,6 +5,8 @@
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
   var mainFrame = document.querySelector('main');
+  var errorTemplate = document.getElementById('error').content.querySelector('.error');
+  var successTemplate = document.getElementById('success').content.querySelector('.success');
 
   var getRandomFromRange = function (max, min) {
     min = min || 0;
@@ -48,16 +50,16 @@
 
   // может тоже переписать в более универсальные функции?
   var createErrorMessage = function () {
-    mainFrame.appendChild(document.getElementById('error').content.querySelector('.error').cloneNode(true));
-    var errorMassage = document.querySelector('.error');
-    errorMassage.addEventListener('click', closeError);
+    var errorsMassage = errorTemplate.cloneNode(true);
+    mainFrame.appendChild(errorsMassage);
+    errorsMassage.addEventListener('click', closeError);
     document.addEventListener('keydown', onErrorEscKeyDown);
   };
 
   var createSuccessMessage = function () {
-    mainFrame.appendChild(document.getElementById('success').content.querySelector('.success').cloneNode(true));
-    var errorMassage = document.querySelector('.success');
-    errorMassage.addEventListener('click', closeError);
+    var successMassage = successTemplate.cloneNode(true);
+    mainFrame.appendChild(successMassage);
+    successMassage.addEventListener('click', closeError);
     document.addEventListener('keydown', onErrorEscKeyDown);
   };
 

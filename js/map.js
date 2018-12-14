@@ -51,7 +51,6 @@
   };
 
   var deactivateMap = function () {
-    // начальные координа ты пина
     mainPin.style = 'left: ' + MAIN_PIN_INITIAL_POSITION.left + 'px; top: ' + MAIN_PIN_INITIAL_POSITION.top + 'px';
     setAddress();
     window.card.clearCard();
