@@ -4,6 +4,8 @@
   var ESC_KEYCODE = 27;
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
+  var mainFrame = document.querySelector('main');
+
   var getRandomFromRange = function (max, min) {
     min = min || 0;
     return Math.floor(Math.random() * (max + 1 - min) + min);
@@ -33,7 +35,7 @@
   };
 
   var closeError = function () {
-    document.querySelector('main').removeChild(document.querySelector('.error'));
+    mainFrame.removeChild(document.querySelector('.error'));
     document.removeEventListener('keydown', onErrorEscKeyDown);
   };
 
@@ -46,17 +48,15 @@
 
   // может тоже переписать в более универсальные функции?
   var createErrorMessage = function () {
-    document.querySelector('main').appendChild(document.getElementById('error').content.querySelector('.error').cloneNode(true));
+    mainFrame.appendChild(document.getElementById('error').content.querySelector('.error').cloneNode(true));
     var errorMassage = document.querySelector('.error');
-    errorMassage.querySelector('.error__button').addEventListener('click', closeError);
     errorMassage.addEventListener('click', closeError);
     document.addEventListener('keydown', onErrorEscKeyDown);
   };
 
   var createSuccessMessage = function () {
-    document.querySelector('main').appendChild(document.getElementById('success').content.querySelector('.success').cloneNode(true));
+    mainFrame.appendChild(document.getElementById('success').content.querySelector('.success').cloneNode(true));
     var errorMassage = document.querySelector('.success');
-    errorMassage.querySelector('.success__button').addEventListener('click', closeError);
     errorMassage.addEventListener('click', closeError);
     document.addEventListener('keydown', onErrorEscKeyDown);
   };

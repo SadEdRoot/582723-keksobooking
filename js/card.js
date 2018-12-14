@@ -7,7 +7,8 @@
 
   var clearCard = function () {
     window.utils.removeClass('map__pin--active');
-    window.map.map.querySelector('.map__card').style.display = 'none';
+    // переписать в добавление класаа.
+    card.style.display = 'none';
     document.removeEventListener('keydown', onCardEscKeyDown);
   };
 
@@ -28,12 +29,17 @@
     });
     cardFragment.appendChild(cardElement);
     window.map.map.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
-    clearCard();
+
   };
+
+  cratePinCard();
+
+  var card = window.map.map.querySelector('.map__card');
+  clearCard();
 
   window.card = {
     onCardEscKeyDown: onCardEscKeyDown,
-    cratePinCard: cratePinCard,
+    card: card,
     clearCard: clearCard
   };
 

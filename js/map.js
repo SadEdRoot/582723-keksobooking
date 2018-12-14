@@ -9,6 +9,7 @@
   var EDGE_MAP_X_MIN = 0 - MAIN_PIN_WIDTH;
   var EDGE_MAP_Y_MAX = 630;
   var EDGE_MAP_Y_MIN = 130;
+  var MAIN_PIN_INITIAL_POSITION = {left: 570, top: 375};
 
   var AccomodationType = {
     BUNGALO: 'Бунгало',
@@ -41,16 +42,20 @@
     });
   };
 
-  var deactivateMap = function () {
-    // начальные координа ты пина
-    mainPin.style = 'left: 570px; top: 375px';
-    setAddress();
-    map.removeChild(document.querySelector('.map__card'));
+  var removePins = function () {
     Array.from(mapPins.querySelectorAll('.map__pin')).forEach(function (pin) {
       if (!pin.classList.contains('map__pin--main')) {
         mapPins.removeChild(pin);
       }
     });
+  };
+
+  var deactivateMap = function () {
+    // начальные координа ты пина
+    mainPin.style = 'left: ' + MAIN_PIN_INITIAL_POSITION.left + 'px; top: ' + MAIN_PIN_INITIAL_POSITION.top + 'px';
+    setAddress();
+    window.card.clearCard();
+    removePins();
     disabledAllForm();
     window.map.isMapActivated = false;
   };
@@ -89,6 +94,7 @@
     cardElement.querySelector('.popup__description').textContent = pin.offer.description;
     cardElement.querySelector('.popup__photos').innerHTML = addPhotosToCard(pin.offer.photos);
     cardElement.querySelector('.popup__avatar').src = pin.author.avatar;
+    // переписать в добавление класса
     map.querySelector('.map__card').style.display = 'block';
     addEscKeyDown();
   };

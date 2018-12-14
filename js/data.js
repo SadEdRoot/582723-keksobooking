@@ -5,10 +5,9 @@
 (function () {
 
   var successHandler = function (response) {
-    var pins = response.filter(function (pin) {
+    window.data.pins = response.filter(function (pin) {
       return pin.offer !== null;
     });
-    window.data.pins = pins;
     window.pins.createPinMap();
   };
 

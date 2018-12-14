@@ -41,7 +41,7 @@
       if (!window.map.isMapActivated) {
         window.map.activateMap();
         window.data.getPinsInstances();
-        window.card.cratePinCard();
+        // window.card.cratePinCard();
         window.map.isMapActivated = true;
       }
 
