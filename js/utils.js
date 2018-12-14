@@ -5,8 +5,6 @@
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
   var mainFrame = document.querySelector('main');
-  var errorTemplate = document.getElementById('error').content.querySelector('.error');
-  var successTemplate = document.getElementById('success').content.querySelector('.success');
 
   var getRandomFromRange = function (max, min) {
     min = min || 0;
@@ -36,11 +34,13 @@
     }
   };
 
+  // может тоже переписать в более универсальные функции?
+  var errorTemplate = document.getElementById('error').content.querySelector('.error');
+
   var closeError = function () {
     mainFrame.removeChild(document.querySelector('.error'));
     document.removeEventListener('keydown', onErrorEscKeyDown);
   };
-
 
   var onErrorEscKeyDown = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
@@ -48,7 +48,6 @@
     }
   };
 
-  // может тоже переписать в более универсальные функции?
   var createErrorMessage = function () {
     var errorsMassage = errorTemplate.cloneNode(true);
     mainFrame.appendChild(errorsMassage);
@@ -56,11 +55,25 @@
     document.addEventListener('keydown', onErrorEscKeyDown);
   };
 
+  // вторая походая структура которую неплохо бы сделать универсальной
+  var successTemplate = document.getElementById('success').content.querySelector('.success');
+
+  var closeSuccess = function () {
+    mainFrame.removeChild(document.querySelector('.success'));
+    document.removeEventListener('keydown', onSuccessEscKeyDown);
+  };
+
+  var onSuccessEscKeyDown = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      closeSuccess();
+    }
+  };
+
   var createSuccessMessage = function () {
     var successMassage = successTemplate.cloneNode(true);
     mainFrame.appendChild(successMassage);
-    successMassage.addEventListener('click', closeError);
-    document.addEventListener('keydown', onErrorEscKeyDown);
+    successMassage.addEventListener('click', closeSuccess);
+    document.addEventListener('keydown', onSuccessEscKeyDown);
   };
 
   window.utils = {

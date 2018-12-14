@@ -7,8 +7,7 @@
 
   var clearCard = function () {
     window.utils.removeClass('map__pin--active');
-    // переписать в добавление класаа.
-    card.style.display = 'none';
+    card.classList.add('hidden');
     document.removeEventListener('keydown', onCardEscKeyDown);
   };
 
