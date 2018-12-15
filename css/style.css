@@ -1250,5 +1250,5 @@ fieldset {
 }
 
 .error_form {
-  box-shadow: 0 0 3pt 2pt red;
+  box-shadow: 0 0 2pt 2pt #ff6547;
 }
