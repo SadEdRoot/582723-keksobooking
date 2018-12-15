@@ -9,6 +9,7 @@
   var EDGE_MAP_X_MIN = 0 - MAIN_PIN_WIDTH;
   var EDGE_MAP_Y_MAX = 630;
   var EDGE_MAP_Y_MIN = 130;
+  var MAIN_PIN_INITIAL_POSITION = {left: 570, top: 375};
 
   var AccomodationType = {
     BUNGALO: 'Бунгало',
@@ -17,10 +18,10 @@
     FLAT: 'Квартира'
   };
 
-  var cardList = document.querySelector('.map');
-  var mainPin = document.querySelector('.map__pin--main');
-  var adressInput = document.querySelector('#address');
   var map = document.querySelector('.map');
+  var mapPins = document.querySelector('.map__pins');
+  var mainPin = mapPins.querySelector('.map__pin--main');
+  var adressInput = document.querySelector('#address');
   var userForm = document.querySelector('.ad-form');
 
   var activateMap = function () {
@@ -31,6 +32,38 @@
       item.disabled = false;
     });
   };
+
+  var disabledAllForm = function () {
+    map.classList.add('map--faded');
+    userForm.classList.add('ad-form--disabled');
+    var inputs = document.querySelectorAll('.ad-form  input, .ad-form select, .map__filters input, .map__filters select');
+    inputs.forEach(function (item) {
+      item.disabled = true;
+    });
+  };
+
+  var removePins = function () {
+    Array.from(mapPins.querySelectorAll('.map__pin')).forEach(function (pin) {
+      if (!pin.classList.contains('map__pin--main')) {
+        mapPins.removeChild(pin);
+      }
+    });
+  };
+
+  var resetMainPinPosition = function () {
+    mainPin.style.left = MAIN_PIN_INITIAL_POSITION.left + 'px';
+    mainPin.style.top = MAIN_PIN_INITIAL_POSITION.top + 'px';
+  };
+
+  var deactivateMap = function () {
+    resetMainPinPosition();
+    setAddress();
+    window.card.clearCard();
+    removePins();
+    disabledAllForm();
+    window.map.isMapActivated = false;
+  };
+
 
   var addEscKeyDown = function () {
     document.addEventListener('keydown', window.card.onCardEscKeyDown);
@@ -52,20 +85,19 @@
     return photo;
   };
 
-
+  // функция обновления карточки активного пина
   var updateCard = function (pin) {
-    var cardElement = cardList.querySelector('.map__card');
-    cardElement.querySelector('.popup__title').textContent = pin.offer.title;
-    cardElement.querySelector('.popup__text--address').textContent = pin.offer.address;
-    cardElement.querySelector('.popup__text--price').textContent = pin.offer.price + '₽/ночь';
-    cardElement.querySelector('.popup__type').textContent = AccomodationType[pin.offer.type];
-    cardElement.querySelector('.popup__text--capacity').textContent = pin.offer.rooms + ' комнаты для ' + pin.offer.guests + ' гостей';
-    cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + pin.offer.checkin + ', выезд до ' + pin.offer.checkout;
-    cardElement.querySelector('.popup__features').innerHTML = addFeaturesToCard(pin.offer.features);
-    cardElement.querySelector('.popup__description').textContent = pin.offer.description;
-    cardElement.querySelector('.popup__photos').innerHTML = addPhotosToCard(pin.offer.photos);
-    cardElement.querySelector('.popup__avatar').src = pin.author.avatar;
-    cardList.querySelector('.map__card').style.display = 'block';
+    window.card.card.querySelector('.popup__title').textContent = pin.offer.title;
+    window.card.card.querySelector('.popup__text--address').textContent = pin.offer.address;
+    window.card.card.querySelector('.popup__text--price').textContent = pin.offer.price + '₽/ночь';
+    window.card.card.querySelector('.popup__type').textContent = AccomodationType[pin.offer.type];
+    window.card.card.querySelector('.popup__text--capacity').textContent = pin.offer.rooms + ' комнаты для ' + pin.offer.guests + ' гостей';
+    window.card.card.querySelector('.popup__text--time').textContent = 'Заезд после ' + pin.offer.checkin + ', выезд до ' + pin.offer.checkout;
+    window.card.card.querySelector('.popup__features').innerHTML = addFeaturesToCard(pin.offer.features);
+    window.card.card.querySelector('.popup__description').textContent = pin.offer.description;
+    window.card.card.querySelector('.popup__photos').innerHTML = addPhotosToCard(pin.offer.photos);
+    window.card.card.querySelector('.popup__avatar').src = pin.author.avatar;
+    window.card.card.classList.remove('hidden');
     addEscKeyDown();
   };
 
@@ -76,15 +108,14 @@
     adressInput.value = (xCoordinate + MAIN_PIN_WIDTH) + ', ' + (yCoordinate + MAIN_PIN_HEIGHT);
   };
 
-  // глобальный флаг
-  var isMapActivated = false;
-
   window.map = {
     mainPin: mainPin,
     activateMap: activateMap,
+    deactivateMap: deactivateMap,
     setAddress: setAddress,
-    isMapActivated: isMapActivated,
-    cardList: cardList,
+    isMapActivated: false,
+    map: map,
+    mapPins: mapPins,
     EDGE_MAP_X_MAX: EDGE_MAP_X_MAX,
     EDGE_MAP_X_MIN: EDGE_MAP_X_MIN,
     EDGE_MAP_Y_MAX: EDGE_MAP_Y_MAX,

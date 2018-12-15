@@ -6,15 +6,19 @@
   var ESC_KEYCODE = 27;
 
   var clearCard = function () {
-    window.map.cardList.querySelector('.map__card').style.display = 'none';
+    window.utils.removeClass('map__pin--active');
+    card.classList.add('hidden');
     document.removeEventListener('keydown', onCardEscKeyDown);
   };
 
+
+  // переписать на utils.
   var onCardEscKeyDown = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       clearCard();
     }
   };
+
 
   var cratePinCard = function () {
     var cardFragment = document.createDocumentFragment();
@@ -23,13 +27,19 @@
       clearCard();
     });
     cardFragment.appendChild(cardElement);
-    window.map.cardList.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
-    clearCard();
+    window.map.map.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
+
   };
+
+  cratePinCard();
+
+  var card = window.map.map.querySelector('.map__card');
+  clearCard();
 
   window.card = {
     onCardEscKeyDown: onCardEscKeyDown,
-    cratePinCard: cratePinCard
+    card: card,
+    clearCard: clearCard
   };
 
 })();
