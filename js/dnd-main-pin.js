@@ -40,8 +40,6 @@
     var onMouseUp = function () {
       if (!window.map.isMapActivated) {
         window.map.activateMap();
-        window.data.getPinsInstances();
-        window.map.isMapActivated = true;
       }
 
       window.map.setAddress();

@@ -23,6 +23,17 @@
   var mainPin = mapPins.querySelector('.map__pin--main');
   var adressInput = document.querySelector('#address');
   var userForm = document.querySelector('.ad-form');
+  var filteBox = document.querySelector('.map__filters-container');
+
+
+  var hideFilter = function () {
+    filteBox.classList.add('hidden');
+  };
+
+  var showFilter = function () {
+    filteBox.classList.remove('hidden');
+  };
+
 
   var activateMap = function () {
     map.classList.remove('map--faded');
@@ -31,6 +42,8 @@
     inputs.forEach(function (item) {
       item.disabled = false;
     });
+    window.data.getPinsInstances();
+    window.map.isMapActivated = true;
   };
 
   var disabledAllForm = function () {
@@ -40,9 +53,11 @@
     inputs.forEach(function (item) {
       item.disabled = true;
     });
+    hideFilter();
   };
 
   var removePins = function () {
+    window.card.clearCard();
     Array.from(mapPins.querySelectorAll('.map__pin')).forEach(function (pin) {
       if (!pin.classList.contains('map__pin--main')) {
         mapPins.removeChild(pin);
@@ -58,7 +73,6 @@
   var deactivateMap = function () {
     resetMainPinPosition();
     setAddress();
-    window.card.clearCard();
     removePins();
     disabledAllForm();
     window.map.isMapActivated = false;
@@ -116,12 +130,14 @@
     isMapActivated: false,
     map: map,
     mapPins: mapPins,
+    removePins: removePins,
     EDGE_MAP_X_MAX: EDGE_MAP_X_MAX,
     EDGE_MAP_X_MIN: EDGE_MAP_X_MIN,
     EDGE_MAP_Y_MAX: EDGE_MAP_Y_MAX,
     EDGE_MAP_Y_MIN: EDGE_MAP_Y_MIN,
     userForm: userForm,
-    updateCard: updateCard
+    updateCard: updateCard,
+    showFilter: showFilter
   };
 })();
 
