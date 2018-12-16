@@ -5,38 +5,45 @@
 
   // функция фильтрации прогоняет исходный данные пина на полное совпадения условий формы
   var checkElement = function (pin) {
+    var LOW_PRICE = 10000;
+    var HIGHT_PRICE = 50000;
+
+    var Categories = {
+      any: 'any',
+      low: 'low',
+      middle: 'middle',
+      high: 'high'
+    };
+
     var type = true;
     var rooms = true;
     var price = true;
     var guests = true;
     var features = true;
 
-    var lowPrice = 10000;
-    var highPrice = 50000;
-
     var featuresFromData = window.filter.data.getAll('features');
 
-    if (window.filter.data.get('housing-type') !== 'any') {
+    if (window.filter.data.get('housing-type') !== Categories.any) {
       type = window.filter.data.get('housing-type') === pin.offer.type;
     }
 
-    if (window.filter.data.get('housing-price') !== 'any') {
+    if (window.filter.data.get('housing-price') !== Categories.any) {
       switch (window.filter.data.get('housing-price')) {
-        case 'low':
-          price = pin.offer.price < lowPrice;
+        case Categories.low:
+          price = pin.offer.price < LOW_PRICE;
           break;
-        case 'middle':
-          price = pin.offer.price >= lowPrice && pin.offer.price <= highPrice;
+        case Categories.middle:
+          price = pin.offer.price >= LOW_PRICE && pin.offer.price <= HIGHT_PRICE;
           break;
-        case 'high':
-          price = pin.offer.price > highPrice;
+        case Categories.high:
+          price = pin.offer.price > HIGHT_PRICE;
           break;
       }
     }
-    if (window.filter.data.get('housing-rooms') !== 'any') {
+    if (window.filter.data.get('housing-rooms') !== Categories.any) {
       rooms = parseInt(window.filter.data.get('housing-rooms'), 10) === pin.offer.rooms;
     }
-    if (window.filter.data.get('housing-guests') !== 'any') {
+    if (window.filter.data.get('housing-guests') !== Categories.any) {
       guests = parseInt(window.filter.data.get('housing-guests'), 10) === pin.offer.guests;
     }
 
