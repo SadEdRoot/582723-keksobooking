@@ -2,7 +2,7 @@
 
 (function () {
   // данные для создания пина
-  var NUMBER_OF_PINS = 8;
+  var NUMBER_OF_PINS = 5;
   var PIN_WIDTH = 25;
   var PIN_HEIGHT = 70;
   var ENTER_KEYCODE = 13;
@@ -22,12 +22,12 @@
     pinFragment.querySelector('img').alt = pin.offer.title;
     pinFragment.addEventListener('click', function (evt) {
       updatePinClass(evt.currentTarget);
-      window.map.updateCard(window.data.pins[evt.currentTarget.dataset.id]);
+      window.map.updateCard(window.filter.filteredData[evt.currentTarget.dataset.id]);
     });
     pinFragment.addEventListener('keydown', function (evt) {
       if (evt.keyCode === ENTER_KEYCODE) {
         updatePinClass(evt.currentTarget);
-        window.map.updateCard(window.data.pins[evt.currentTarget.dataset.id]);
+        window.map.updateCard(window.filter.filteredData[evt.currentTarget.dataset.id]);
       }
     });
     pinFragment.dataset.id = id;
@@ -36,14 +36,14 @@
 
   var createPinsTemplates = function (pins) {
     var fragment = document.createDocumentFragment();
-    for (var j = 0; j < NUMBER_OF_PINS; j++) {
+    for (var j = 0; j < Math.min(NUMBER_OF_PINS, pins.length); j++) {
       fragment.appendChild(renderPin(pinElement, pins[j], j));
     }
     return fragment;
   };
 
-  var createPinMap = function () {
-    window.map.mapPins.appendChild(createPinsTemplates(window.data.pins));
+  var createPinMap = function (dataSet) {
+    window.map.mapPins.appendChild(createPinsTemplates(dataSet));
   };
 
   window.pins = {

@@ -8,12 +8,13 @@
     window.data.pins = response.filter(function (pin) {
       return pin.offer !== null;
     });
-    window.pins.createPinMap();
+    window.filter.updateFilterData();
+    window.pins.createPinMap(window.filter.filteredData);
+    window.map.showFilter();
   };
 
   var errorHandler = function (errorMassage) {
     window.utils.createErrorMessage(errorMassage);
-
   };
 
   var getPinsInstances = function () {
