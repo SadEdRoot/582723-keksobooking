@@ -36,7 +36,7 @@
       </div>
 
       <!-- Фильтрация объявлений -->
-      <div class="map__filters-container">
+      <div class="map__filters-container hidden">
         <form action="#" class="map__filters" autocomplete="off">
           <select name="housing-type" id="housing-type" class="map__filter" disabled>
             <option value="any" selected>Любой тип жилья</option>
@@ -84,7 +84,7 @@
     <!-- Форма объявления -->
     <section class="notice">
       <h2 class="notice__title">Ваше объявление</h2>
-      <form class="ad-form ad-form--disabled" method="post" action="https://js.dump.academy/keksobooking" enctype="multipart/form-data" autocomplete="off">
+      <form class="ad-form ad-form--disabled" autocomplete="off">
         <fieldset class="ad-form-header">
           <legend class="ad-form-header__title">Ваша фотография (для карты)</legend>
           <div class="ad-form-header__upload">
@@ -117,7 +117,7 @@
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
-          <input id="price" name="price" type="number" placeholder="5000" disabled  type="number" required max="1000000">
+          <input id="price" name="price" type="number" placeholder="1000" disabled min="1000" type="number" required max="1000000">
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--time">
           <label class="ad-form__label" for="timein">Время заезда и выезда</label>
@@ -144,9 +144,9 @@
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="capacity">Количество мест</label>
           <select id="capacity" name="capacity" disabled>
-            <option value="3" selected>для 3 гостей</option>
+            <option value="3">для 3 гостей</option>
             <option value="2">для 2 гостей</option>
-            <option value="1">для 1 гостя</option>
+            <option value="1" selected>для 1 гостя</option>
             <option value="0">не для гостей</option>
           </select>
         </fieldset>
@@ -161,9 +161,9 @@
           <input type="checkbox" name="features" value="washer" id="feature-washer" class="feature__checkbox visually-hidden" disabled>
           <label class="feature feature--washer" for="feature-washer">Стиральная машина</label>
           <input type="checkbox" name="features" value="elevator" id="feature-elevator" class="feature__checkbox visually-hidden" disabled>
-          <label class="feature feature--elevator" for="feature-elevator">Лифт</label>
+          <label class="feature feature--elevator" for="feature-elevator" disabled>Лифт</label>
           <input type="checkbox" name="features" value="conditioner" id="feature-conditioner" class="feature__checkbox visually-hidden" disabled>
-          <label class="feature feature--conditioner" for="feature-conditioner">Кондиционер</label>
+          <label class="feature feature--conditioner" for="feature-conditioner" disabled>Кондиционер</label>
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="description">Описание (не обязательно)</label>
@@ -248,12 +248,15 @@
     </div>
   </template>
 
+  <script src="js/backend.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/map.js"></script>
   <script src="js/data.js"></script>
   <script src="js/card.js"></script>
   <script src="js/pins.js"></script>
   <script src="js/dnd-main-pin.js"></script>
+  <script src="js/debounce.js"></script>
+  <script src="js/filter.js"></script>
   <script src="js/form.js"></script>
 
 </body>
