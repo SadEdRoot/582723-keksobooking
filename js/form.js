@@ -59,7 +59,7 @@
     userSelectPrice.min = price;
     userSelectPrice.placeholder = price;
   };
-  // кажеться нужно сделать еще одну утилиту что бы синхронизовать форму при
+
   userSelectType.addEventListener('change', syncTypeWithPrice);
 
   var markError = function () {
@@ -74,13 +74,11 @@
   };
 
   var onError = function () {
-    // Добавьте обработку возможных ошибок при загрузке: покажите сообщение об ошибке в блоке main, используя блок #error из шаблона template
     window.utils.createErrorMessage();
   };
 
   var onSuccess = function () {
     window.map.userForm.reset();
-    // вызов окна сообщения о успехе
     window.utils.createSuccessMessage();
   };
 

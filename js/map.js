@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   // данные по размеру карты
   var MAIN_PIN_WIDTH = 32;
   var MAIN_PIN_HEIGHT = 76;

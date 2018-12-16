@@ -34,6 +34,12 @@
     }
   };
 
+  var onCardEscKeyDown = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      window.card.clearCard();
+    }
+  };
+
   // может тоже переписать в более универсальные функции?
   var errorTemplate = document.getElementById('error').content.querySelector('.error');
 
@@ -82,6 +88,7 @@
     shuffleArray: shuffleArray,
     removeClass: removeClass,
     createErrorMessage: createErrorMessage,
-    createSuccessMessage: createSuccessMessage
+    createSuccessMessage: createSuccessMessage,
+    onCardEscKeyDown: onCardEscKeyDown
   };
 })();

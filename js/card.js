@@ -2,31 +2,19 @@
 'use strict';
 
 (function () {
-
-  var ESC_KEYCODE = 27;
-
   var clearCard = function () {
     window.utils.removeClass('map__pin--active');
     card.classList.add('hidden');
-    document.removeEventListener('keydown', onCardEscKeyDown);
+    document.removeEventListener('keydown', window.utils.onCardEscKeyDown);
   };
-
-
-  // переписать на utils.
-  var onCardEscKeyDown = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      clearCard();
-    }
-  };
-
 
   var cratePinCard = function () {
     var cardFragment = document.createDocumentFragment();
-    var cardElement = document.querySelector('#card').content.querySelector('.map__card').cloneNode(true);
-    cardElement.querySelector('.popup__close').addEventListener('click', function () {
+    var cardTemplate = document.querySelector('#card').content.querySelector('.map__card').cloneNode(true);
+    cardTemplate.querySelector('.popup__close').addEventListener('click', function () {
       clearCard();
     });
-    cardFragment.appendChild(cardElement);
+    cardFragment.appendChild(cardTemplate);
     window.map.map.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
 
   };
@@ -37,7 +25,6 @@
   clearCard();
 
   window.card = {
-    onCardEscKeyDown: onCardEscKeyDown,
     card: card,
     clearCard: clearCard
   };
