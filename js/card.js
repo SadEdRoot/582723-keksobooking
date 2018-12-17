@@ -2,31 +2,31 @@
 'use strict';
 
 (function () {
-  var clearCard = function () {
+  var clear = function () {
     window.utils.removeClass('map__pin--active');
     card.classList.add('hidden');
     document.removeEventListener('keydown', window.utils.onCardEscKeyDown);
   };
 
-  var cratePinCard = function () {
+  var cratePin = function () {
     var cardFragment = document.createDocumentFragment();
     var cardTemplate = document.querySelector('#card').content.querySelector('.map__card').cloneNode(true);
     cardTemplate.querySelector('.popup__close').addEventListener('click', function () {
-      clearCard();
+      clear();
     });
     cardFragment.appendChild(cardTemplate);
     window.map.map.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
 
   };
 
-  cratePinCard();
+  cratePin();
 
   var card = window.map.map.querySelector('.map__card');
-  clearCard();
+  clear();
 
   window.card = {
     card: card,
-    clearCard: clearCard
+    clear: clear
   };
 
 })();

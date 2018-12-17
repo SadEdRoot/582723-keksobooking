@@ -42,12 +42,12 @@
     return fragment;
   };
 
-  var createPinMap = function (dataSet) {
+  var createMap = function (dataSet) {
     window.map.mapPins.appendChild(createPinsTemplates(dataSet));
   };
 
   window.pins = {
-    createPinMap: createPinMap
+    createMap: createMap
   };
 
 })();

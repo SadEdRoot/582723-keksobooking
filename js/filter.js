@@ -2,18 +2,18 @@
 
 (function () {
   var filter = document.querySelector('.map__filters');
+  var LOW_PRICE = 10000;
+  var HIGHT_PRICE = 50000;
+
+  var Categories = {
+    ANY: 'any',
+    LOW: 'low',
+    MIDDLE: 'middle',
+    HIGH: 'high'
+  };
 
   // функция фильтрации прогоняет исходный данные пина на полное совпадения условий формы
   var checkPin = function (pin) {
-    var LOW_PRICE = 10000;
-    var HIGHT_PRICE = 50000;
-
-    var Categories = {
-      ANY: 'any',
-      LOW: 'low',
-      MIDDLE: 'middle',
-      HIGH: 'high'
-    };
 
     var type = true;
     var room = true;
@@ -70,7 +70,7 @@
   var updatePins = window.debounce(function () {
     updateFilterData();
     window.map.removePins();
-    window.pins.createPinMap(window.filter.filteredData);
+    window.pins.createMap(window.filter.filteredData);
   });
 
   filter.querySelectorAll('select, input[type=checkbox]').forEach(function (item) {

@@ -8,9 +8,9 @@
     window.data.pins = response.filter(function (pin) {
       return pin.offer !== null;
     });
-    window.filter.updateFilterData();
-    window.pins.createPinMap(window.filter.filteredData);
     window.map.showFilter();
+    window.filter.updateFilterData();
+    window.pins.createMap(window.filter.filteredData);
   };
 
   var errorHandler = function (errorMassage) {

@@ -6,7 +6,7 @@
   var userRoomInput = window.map.userForm.querySelector('#room_number');
   var userCapacity = window.map.userForm.querySelector('#capacity');
 
-  var availibelCupacity = {
+  var availibelCapacity = {
     1: [1],
     2: [2, 1],
     3: [3, 2, 1],
@@ -16,7 +16,7 @@
   var syncRoomAndCapacity = function () {
     var room = parseInt(userRoomInput.value, 10);
     var capacity = parseInt(userCapacity.value, 10);
-    if (availibelCupacity[room].indexOf(capacity) === -1) {
+    if (availibelCapacity[room].indexOf(capacity) === -1) {
       userCapacity.setCustomValidity('Количество гостей не соотвествует количеству комнат');
     } else {
       userCapacity.setCustomValidity('');
@@ -47,10 +47,10 @@
   var userSelectPrice = document.getElementById('price');
 
   var typePrice = {
-    'bungalo': 0,
-    'flat': 1000,
-    'house': 5000,
-    'palace': 10000
+    bungalo: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
   };
 
   var syncTypeWithPrice = function (evt) {
@@ -63,12 +63,12 @@
   userSelectType.addEventListener('change', syncTypeWithPrice);
 
   var markError = function () {
-    var invalidInputArray = Array.from(window.map.userForm.querySelectorAll('select:invalid, input:invalid'));
-    var validInputArray = Array.from(window.map.userForm.querySelectorAll('select:valid, input:valid'));
-    invalidInputArray.forEach(function (item) {
+    var invalidInputs = Array.from(window.map.userForm.querySelectorAll('select:invalid, input:invalid'));
+    var validInputs = Array.from(window.map.userForm.querySelectorAll('select:valid, input:valid'));
+    invalidInputs.forEach(function (item) {
       item.classList.add('error_form');
     });
-    validInputArray.forEach(function (item) {
+    validInputs.forEach(function (item) {
       item.classList.remove('error_form');
     });
   };
@@ -83,10 +83,20 @@
   };
 
   var onSubmit = function (evt) {
+    /*
     evt.preventDefault();
+
     syncRoomAndCapacity(); // эту команду нужно сделать во время проверки а не во время сабмита. сабмит уже отправляет данные.
-    markError(); // вообще не нужна по идеи
-    window.backend.save(new FormData(window.map.userForm), onSuccess, onError);
+    if ()*/
+
+    evt.preventDefault();
+    markError();
+    if (window.map.userForm.checkValidity()) {
+      window.backend.save(new FormData(window.map.userForm), onSuccess, onError);
+    } else {
+      // добавить красный бордер
+
+    }
   };
 
   var onReset = function () {
@@ -94,6 +104,7 @@
   };
 
   window.map.userForm.addEventListener('submit', onSubmit);
+
   window.map.userForm.addEventListener('reset', onReset);
 
 })();
