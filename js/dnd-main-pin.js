@@ -1,7 +1,13 @@
-// функция перемещения главного пина
 'use strict';
 
 (function () {
+  var EDGE_MAP_Y_MAX = 630;
+  var EDGE_MAP_Y_MIN = 130;
+
+  var edgeMapXMax = document.querySelector('.map').offsetWidth - window.map.MAIN_PIN_WIDTH;
+  var edgeMapXMix = 0 - window.map.MAIN_PIN_WIDTH;
+
+
   window.map.mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -27,10 +33,10 @@
       var xCoordinate = window.map.mainPin.offsetLeft - shift.x;
       var yCoordinate = window.map.mainPin.offsetTop - shift.y;
 
-      if (yCoordinate < window.map.EDGE_MAP_Y_MAX && yCoordinate > window.map.EDGE_MAP_Y_MIN) {
+      if (yCoordinate < EDGE_MAP_Y_MAX && yCoordinate > EDGE_MAP_Y_MIN) {
         window.map.mainPin.style.top = (window.map.mainPin.offsetTop - shift.y) + 'px';
       }
-      if (xCoordinate < window.map.EDGE_MAP_X_MAX && xCoordinate > window.map.EDGE_MAP_X_MIN) {
+      if (xCoordinate < edgeMapXMax && xCoordinate > edgeMapXMix) {
         window.map.mainPin.style.left = (window.map.mainPin.offsetLeft - shift.x) + 'px';
       }
 
