@@ -9,7 +9,7 @@
       return pin.offer !== null;
     });
     window.map.showFilter();
-    window.filter.updateFilterData();
+    window.filter.updateData();
     window.pins.createMap(window.filter.filteredData);
   };
 

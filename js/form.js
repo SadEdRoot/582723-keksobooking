@@ -96,7 +96,7 @@
   };
 
   var onReset = function () {
-    window.map.deactivateMap();
+    window.map.deactivate();
     removeError();
   };
 
