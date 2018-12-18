@@ -7,7 +7,7 @@
   var PIN_HEIGHT = 70;
   var ENTER_KEYCODE = 13;
 
-  var pinElement = document.querySelector('#pin').content.querySelector('.map__pin');
+  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   var updatePinClass = function (element) {
     window.utils.removeClass('map__pin--active');
@@ -37,17 +37,17 @@
   var createPinsTemplates = function (pins) {
     var fragment = document.createDocumentFragment();
     for (var j = 0; j < Math.min(NUMBER_OF_PINS, pins.length); j++) {
-      fragment.appendChild(renderPin(pinElement, pins[j], j));
+      fragment.appendChild(renderPin(pinTemplate, pins[j], j));
     }
     return fragment;
   };
 
-  var createPinMap = function (dataSet) {
+  var createMap = function (dataSet) {
     window.map.mapPins.appendChild(createPinsTemplates(dataSet));
   };
 
   window.pins = {
-    createPinMap: createPinMap
+    createMap: createMap
   };
 
 })();
