@@ -60,7 +60,7 @@
   };
 
   // фильтрует исходные данные и записывает их в глобальную переменную, с этими данными работают отрисовка пинов и карточки
-  var updateFilterData = function () {
+  var updateData = function () {
     window.filter.data = new FormData(filter);
     window.filter.filteredData = window.data.pins.filter(function (pin) {
       return checkPin(pin);
@@ -69,7 +69,7 @@
 
   // запускает фильтрацию данных и перерисовывает пины
   var updatePins = window.debounce(function () {
-    updateFilterData();
+    updateData();
     window.map.removePins();
     window.pins.createMap(window.filter.filteredData);
   });
@@ -79,6 +79,6 @@
   });
 
   window.filter = {
-    updateFilterData: updateFilterData
+    updateData: updateData
   };
 })();

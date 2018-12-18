@@ -44,8 +44,8 @@
     };
 
     var onMouseUp = function () {
-      if (!window.map.isMapActivated) {
-        window.map.activateMap();
+      if (!window.map.isActivated) {
+        window.map.activate();
       }
 
       window.map.setAddress();
