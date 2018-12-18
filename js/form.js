@@ -1,5 +1,4 @@
 'use strict';
-// Синхронизация поля количество гостей по полю количество комнат
 
 (function () {
   var userRoomInput = window.map.userForm.querySelector('#room_number');

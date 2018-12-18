@@ -22,6 +22,6 @@
   };
 
   window.data = {
-    'getPinsInstances': getPinsInstances
+    getPinsInstances: getPinsInstances
   };
 })();

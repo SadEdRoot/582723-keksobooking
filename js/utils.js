@@ -14,7 +14,7 @@
 
   var onCardEscKeyDown = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
-      window.card.clearCard();
+      window.card.clear();
     }
   };
 

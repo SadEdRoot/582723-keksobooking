@@ -4,12 +4,13 @@
   var LOADING_URL = 'https://js.dump.academy/keksobooking/data';
   var SAVING_URL = 'https://js.dump.academy/keksobooking';
   var TIMEOUT = 10000;
+  var OK_STATUS_CODE = 200;
 
   var save = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === OK_STATUS_CODE) {
         onLoad(xhr.response);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
