@@ -1,9 +1,10 @@
 'use strict';
 
 (function () {
-  var filter = document.querySelector('.map__filters');
   var LOW_PRICE = 10000;
   var HIGHT_PRICE = 50000;
+
+  var filter = document.querySelector('.map__filters');
 
   var Categories = {
     ANY: 'any',
