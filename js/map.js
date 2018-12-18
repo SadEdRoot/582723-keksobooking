@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   // данные по размеру карты
   var MAIN_PIN_WIDTH = 32;
   var MAIN_PIN_HEIGHT = 76;
@@ -25,20 +24,18 @@
   var userForm = document.querySelector('.ad-form');
   var filteBox = document.querySelector('.map__filters-container');
 
-
-  var hideFilter = function () {
-    filteBox.classList.add('hidden');
-  };
-
   var showFilter = function () {
-    filteBox.classList.remove('hidden');
+    var inputs = filteBox.querySelectorAll('.map__filters input, .map__filters select');
+    inputs.forEach(function (item) {
+      item.disabled = false;
+    });
   };
 
 
   var activateMap = function () {
     map.classList.remove('map--faded');
     userForm.classList.remove('ad-form--disabled');
-    var inputs = document.querySelectorAll('.ad-form  input, .ad-form select, .map__filters input, .map__filters select');
+    var inputs = document.querySelectorAll('.ad-form  input, .ad-form select');
     inputs.forEach(function (item) {
       item.disabled = false;
     });
@@ -46,18 +43,17 @@
     window.map.isMapActivated = true;
   };
 
-  var disabledAllForm = function () {
+  var disableForm = function () {
     map.classList.add('map--faded');
     userForm.classList.add('ad-form--disabled');
     var inputs = document.querySelectorAll('.ad-form  input, .ad-form select, .map__filters input, .map__filters select');
     inputs.forEach(function (item) {
       item.disabled = true;
     });
-    hideFilter();
   };
 
   var removePins = function () {
-    window.card.clearCard();
+    window.card.clear();
     Array.from(mapPins.querySelectorAll('.map__pin')).forEach(function (pin) {
       if (!pin.classList.contains('map__pin--main')) {
         mapPins.removeChild(pin);
@@ -74,7 +70,7 @@
     resetMainPinPosition();
     setAddress();
     removePins();
-    disabledAllForm();
+    disableForm();
     window.map.isMapActivated = false;
   };
 
