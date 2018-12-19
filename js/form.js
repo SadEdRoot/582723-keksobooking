@@ -1,6 +1,4 @@
-// Блок валидации формы
 'use strict';
-// Синхронизация поля количество гостей по полю количество комнат
 
 (function () {
   var userRoomInput = window.map.userForm.querySelector('#room_number');
@@ -73,6 +71,13 @@
     });
   };
 
+  var removeError = function () {
+    var formFields = window.map.userForm.querySelectorAll('select, input');
+    formFields.forEach(function (item) {
+      item.classList.remove('error_form');
+    });
+  };
+
   var onError = function () {
     window.utils.createErrorMessage();
   };
@@ -83,24 +88,16 @@
   };
 
   var onSubmit = function (evt) {
-    /*
-    evt.preventDefault();
-
-    syncRoomAndCapacity(); // эту команду нужно сделать во время проверки а не во время сабмита. сабмит уже отправляет данные.
-    if ()*/
-
     evt.preventDefault();
     markError();
     if (window.map.userForm.checkValidity()) {
       window.backend.save(new FormData(window.map.userForm), onSuccess, onError);
-    } else {
-      // добавить красный бордер
-
     }
   };
 
   var onReset = function () {
-    window.map.deactivateMap();
+    window.map.deactivate();
+    removeError();
   };
 
   window.map.userForm.addEventListener('submit', onSubmit);

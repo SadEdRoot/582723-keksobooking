@@ -1,15 +1,16 @@
 'use strict';
 
 (function () {
-  var URLLOAD = 'https://js.dump.academy/keksobooking/data';
-  var URLSAVE = 'https://js.dump.academy/keksobooking';
+  var LOADING_URL = 'https://js.dump.academy/keksobooking/data';
+  var SAVING_URL = 'https://js.dump.academy/keksobooking';
   var TIMEOUT = 10000;
+  var OK_STATUS_CODE = 200;
 
   var save = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === OK_STATUS_CODE) {
         onLoad(xhr.response);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -22,7 +23,7 @@
 
     xhr.timeout = TIMEOUT;
 
-    xhr.open('POST', URLSAVE);
+    xhr.open('POST', SAVING_URL);
     xhr.send(data);
 
 
@@ -33,7 +34,7 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === OK_STATUS_CODE) {
         onLoad(xhr.response);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -50,7 +51,7 @@
 
     xhr.timeout = TIMEOUT;
 
-    xhr.open('GET', URLLOAD);
+    xhr.open('GET', LOADING_URL);
     xhr.send();
   };
 

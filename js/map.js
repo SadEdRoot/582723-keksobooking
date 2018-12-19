@@ -4,10 +4,6 @@
   // данные по размеру карты
   var MAIN_PIN_WIDTH = 32;
   var MAIN_PIN_HEIGHT = 76;
-  var EDGE_MAP_X_MAX = document.querySelector('.map').offsetWidth - MAIN_PIN_WIDTH;
-  var EDGE_MAP_X_MIN = 0 - MAIN_PIN_WIDTH;
-  var EDGE_MAP_Y_MAX = 630;
-  var EDGE_MAP_Y_MIN = 130;
   var MAIN_PIN_INITIAL_POSITION = {left: 570, top: 375};
 
   var AccomodationType = {
@@ -17,7 +13,7 @@
     FLAT: 'Квартира'
   };
 
-  var map = document.querySelector('.map');
+  var instance = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var mainPin = mapPins.querySelector('.map__pin--main');
   var adressInput = document.querySelector('#address');
@@ -31,20 +27,19 @@
     });
   };
 
-
-  var activateMap = function () {
-    map.classList.remove('map--faded');
+  var activate = function () {
+    instance.classList.remove('map--faded');
     userForm.classList.remove('ad-form--disabled');
     var inputs = document.querySelectorAll('.ad-form  input, .ad-form select');
     inputs.forEach(function (item) {
       item.disabled = false;
     });
     window.data.getPinsInstances();
-    window.map.isMapActivated = true;
+    window.map.isActivated = true;
   };
 
   var disableForm = function () {
-    map.classList.add('map--faded');
+    instance.classList.add('map--faded');
     userForm.classList.add('ad-form--disabled');
     var inputs = document.querySelectorAll('.ad-form  input, .ad-form select, .map__filters input, .map__filters select');
     inputs.forEach(function (item) {
@@ -66,17 +61,17 @@
     mainPin.style.top = MAIN_PIN_INITIAL_POSITION.top + 'px';
   };
 
-  var deactivateMap = function () {
+  var deactivate = function () {
     resetMainPinPosition();
     setAddress();
     removePins();
     disableForm();
-    window.map.isMapActivated = false;
+    window.map.isActivated = false;
   };
 
 
   var addEscKeyDown = function () {
-    document.addEventListener('keydown', window.card.onCardEscKeyDown);
+    document.addEventListener('keydown', window.utils.onCardEscKeyDown);
   };
 
   var addFeaturesToCard = function (features) {
@@ -97,17 +92,17 @@
 
   // функция обновления карточки активного пина
   var updateCard = function (pin) {
-    window.card.card.querySelector('.popup__title').textContent = pin.offer.title;
-    window.card.card.querySelector('.popup__text--address').textContent = pin.offer.address;
-    window.card.card.querySelector('.popup__text--price').textContent = pin.offer.price + '₽/ночь';
-    window.card.card.querySelector('.popup__type').textContent = AccomodationType[pin.offer.type];
-    window.card.card.querySelector('.popup__text--capacity').textContent = pin.offer.rooms + ' комнаты для ' + pin.offer.guests + ' гостей';
-    window.card.card.querySelector('.popup__text--time').textContent = 'Заезд после ' + pin.offer.checkin + ', выезд до ' + pin.offer.checkout;
-    window.card.card.querySelector('.popup__features').innerHTML = addFeaturesToCard(pin.offer.features);
-    window.card.card.querySelector('.popup__description').textContent = pin.offer.description;
-    window.card.card.querySelector('.popup__photos').innerHTML = addPhotosToCard(pin.offer.photos);
-    window.card.card.querySelector('.popup__avatar').src = pin.author.avatar;
-    window.card.card.classList.remove('hidden');
+    window.card.instance.querySelector('.popup__title').textContent = pin.offer.title;
+    window.card.instance.querySelector('.popup__text--address').textContent = pin.offer.address;
+    window.card.instance.querySelector('.popup__text--price').textContent = pin.offer.price + '₽/ночь';
+    window.card.instance.querySelector('.popup__type').textContent = AccomodationType[pin.offer.type];
+    window.card.instance.querySelector('.popup__text--capacity').textContent = pin.offer.rooms + ' комнаты для ' + pin.offer.guests + ' гостей';
+    window.card.instance.querySelector('.popup__text--time').textContent = 'Заезд после ' + pin.offer.checkin + ', выезд до ' + pin.offer.checkout;
+    window.card.instance.querySelector('.popup__features').innerHTML = addFeaturesToCard(pin.offer.features);
+    window.card.instance.querySelector('.popup__description').textContent = pin.offer.description;
+    window.card.instance.querySelector('.popup__photos').innerHTML = addPhotosToCard(pin.offer.photos);
+    window.card.instance.querySelector('.popup__avatar').src = pin.author.avatar;
+    window.card.instance.classList.remove('hidden');
     addEscKeyDown();
   };
 
@@ -120,17 +115,15 @@
 
   window.map = {
     mainPin: mainPin,
-    activateMap: activateMap,
-    deactivateMap: deactivateMap,
+    activate: activate,
+    deactivate: deactivate,
     setAddress: setAddress,
-    isMapActivated: false,
-    map: map,
+    isActivated: false,
+    instance: instance,
+    MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
+    MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
     mapPins: mapPins,
     removePins: removePins,
-    EDGE_MAP_X_MAX: EDGE_MAP_X_MAX,
-    EDGE_MAP_X_MIN: EDGE_MAP_X_MIN,
-    EDGE_MAP_Y_MAX: EDGE_MAP_Y_MAX,
-    EDGE_MAP_Y_MIN: EDGE_MAP_Y_MIN,
     userForm: userForm,
     updateCard: updateCard,
     showFilter: showFilter

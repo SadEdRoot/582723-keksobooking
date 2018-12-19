@@ -4,7 +4,7 @@
 (function () {
   var clear = function () {
     window.utils.removeClass('map__pin--active');
-    card.classList.add('hidden');
+    instance.classList.add('hidden');
     document.removeEventListener('keydown', window.utils.onCardEscKeyDown);
   };
 
@@ -15,17 +15,17 @@
       clear();
     });
     cardFragment.appendChild(cardTemplate);
-    window.map.map.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
+    window.map.instance.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
 
   };
 
   cratePin();
 
-  var card = window.map.map.querySelector('.map__card');
+  var instance = window.map.instance.querySelector('.map__card');
   clear();
 
   window.card = {
-    card: card,
+    instance: instance,
     clear: clear
   };
 
